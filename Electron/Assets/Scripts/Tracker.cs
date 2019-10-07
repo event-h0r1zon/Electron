@@ -48,6 +48,5 @@ public class Tracker : MonoBehaviour
                 repulsion = false;
             }
         }
-        electron.CheckIfFalling(true);
     }
 }

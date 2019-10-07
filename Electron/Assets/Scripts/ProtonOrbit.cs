@@ -10,6 +10,7 @@ public class ProtonOrbit : MonoBehaviour
     private Collider2D col2D;
 
     void OnTriggerEnter2D(Collider2D other){
+        Debug.Log(electron.electronIsFalling);
         if(other.tag == "Player"){
             orbit.EnterCollider(electron.electronG.transform, gameObject.GetComponentInParent<Transform>(), electron.electronIsFalling);
             Destroy(col2D);
@@ -23,6 +24,7 @@ public class ProtonOrbit : MonoBehaviour
 
     void Update()
     {
+        electron.CheckIfFalling(false);
         if(electron.electronG != null)
             orbit.ExecuteOrbit(electron.electronG.transform, transform);
         else

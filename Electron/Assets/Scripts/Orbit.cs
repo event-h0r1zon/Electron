@@ -9,7 +9,6 @@ public class Orbit
     private bool setProgression = false;
     private bool progressDirector;
     private float orbitProgression = 0f;
-    public float radius;
 
     public Orbit(float radius){
         this.radius = radius;
@@ -18,11 +17,10 @@ public class Orbit
     public void EnterCollider(Transform electronPos, Transform protonPos, bool isFalling){
         enteredOrbit = true;
         setProgression = true;
-        Debug.Log(isFalling);
         if(electronPos.position.x <= protonPos.position.x)
-            progressDirector = isFalling ? true : false;
-        else
             progressDirector = isFalling ? false : true;
+        else
+            progressDirector = isFalling ? true : false;
     }
 
     public void ExecuteOrbit(Transform electronPos, Transform protonPos){
@@ -42,7 +40,7 @@ public class Orbit
             return;
     }
 
-    public Vector2 SetOrbitPosition(float angleDesider){
+    public Vector2 SetOrbitPosition(float angleDesider, float radius){
         
         float angle = Mathf.Deg2Rad * 360 * angleDesider;
 
@@ -53,16 +51,23 @@ public class Orbit
     }
 
     public float SetOrbitProgression(Vector2 objectEnteringPosition, Vector2 protonPosition){
-        float angle = 0f;
-
-        if(objectEnteringPosition.y > protonPosition.y)
-            angle = Mathf.Asin((objectEnteringPosition.x - protonPosition.x)/radius) * Mathf.Rad2Deg;
-
-        else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x > protonPosition.x)
-            angle = Mathf.Acos((objectEnteringPosition.y - protonPosition.y)/radius) * Mathf.Rad2Deg;
-
-        else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x < protonPosition.x)
-            angle = -Mathf.Acos((objectEnteringPosition.y - protonPosition.y)/radius) * Mathf.Rad2Deg;
+        
+        //Base Zone
+        if(objectEnteringPosition.y >= protonPosition.y && objectEnteringPosition.x >= protonPosition.x){
+            
+        }
+        // 90 degree zone
+        else if(objectEnteringPosition.y >= protonPosition.y && objectEnteringPosition.x < protonPosition.x){
+            
+        }
+        // 180 degree zone
+        else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x >= protonPosition.x){
+            
+        }
+        //270 degree zone
+        else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x < protonPosition.x){
+            
+        }
 
         float progression = angle/360;
         return progression;

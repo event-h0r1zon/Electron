@@ -40,7 +40,5 @@ public class PlayerMovement : MonoBehaviour{
 
     private void FixedUpdate(){
         touchSetter(jumpForce);
-        electron.CheckIfFalling(false);
-        Debug.Log(electron.electronIsFalling);
     }
 }

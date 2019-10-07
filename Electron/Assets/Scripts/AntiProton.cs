@@ -43,6 +43,7 @@ public class AntiProton : MonoBehaviour
 
     void Update(){
         orbit.ExecuteOrbit(antielectronRB.transform, transform);
+        electron.CheckIfFalling(true);
     }
 
 }
