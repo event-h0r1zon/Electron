@@ -18,12 +18,13 @@ public class Electron
     public float fallingBonus = 0.01f;
     [HideInInspector]
     public float jumpEnergy = 0.013f;
-    private float tempY;
+    private float antielectronTempY;
+    private float electronTempY;
     public Electron(bool antimatter){
         if(antimatter)
-            tempY = antielectronG.transform.position.y;
+            antielectronTempY = antielectronG.transform.position.y;
         else
-            tempY = electronG.transform.position.y;
+            electronTempY = electronG.transform.position.y;
     }
 
     public Rigidbody2D CheckIfAntiMatter(bool antimatter){
@@ -48,24 +49,20 @@ public class Electron
 
     public void CheckIfFalling(bool antimatter){
         if(antimatter){
-            if(tempY > antielectronG.transform.position.y){
+            if(antielectronTempY > antielectronG.transform.position.y)
                 antielectronIsFalling = true;
-                tempY = antielectronG.transform.position.y;
-            }
-            else{
+            else
                 antielectronIsFalling = false;
-                tempY = antielectronG.transform.position.y;
-            }
+                
+            antielectronTempY = antielectronG.transform.position.y;
         }
         else{
-            if(tempY > electronG.transform.position.y){
+            if(electronTempY > electronG.transform.position.y)
                 electronIsFalling = true;
-                tempY = electronG.transform.position.y;
-            }
-            else{
+            else if(electronTempY <= electronG.transform.position.y)
                 electronIsFalling = false;
-                tempY = electronG.transform.position.y;
-            }
+
+            electronTempY = electronG.transform.position.y;
         }
     }
 }

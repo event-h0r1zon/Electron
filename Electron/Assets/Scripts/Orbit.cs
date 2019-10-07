@@ -18,10 +18,11 @@ public class Orbit
     public void EnterCollider(Transform electronPos, Transform protonPos, bool isFalling){
         enteredOrbit = true;
         setProgression = true;
+        Debug.Log(isFalling);
         if(electronPos.position.x <= protonPos.position.x)
-            progressDirector = isFalling ? false : true;
-        else
             progressDirector = isFalling ? true : false;
+        else
+            progressDirector = isFalling ? false : true;
     }
 
     public void ExecuteOrbit(Transform electronPos, Transform protonPos){

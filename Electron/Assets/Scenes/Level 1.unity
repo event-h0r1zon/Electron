@@ -197,7 +197,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 65692824}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.48, y: 20.8, z: -4.397673}
+  m_LocalPosition: {x: 32.9, y: 20.8, z: -4.397673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1726690726}
@@ -219,7 +219,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
 --- !u!50 &65692828
 Rigidbody2D:
   serializedVersion: 4
@@ -884,7 +884,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 10.5
+  m_Radius: 10
 --- !u!114 &1828487643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1106,7 +1106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1898155413}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -26.1, y: 16.4, z: -4.397673}
+  m_LocalPosition: {x: -58.8, y: 16.4, z: -4.397673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2019169654}
@@ -1128,7 +1128,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
 --- !u!50 &1898155417
 Rigidbody2D:
   serializedVersion: 4
@@ -1144,7 +1144,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1162,7 +1162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0868ad0ab0454524e905cce892a7f5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: {x: 6, y: 5}
+  jumpForce: {x: 13, y: 13}
   electron:
     electronG: {fileID: 1898155413}
     antielectronG: {fileID: 65692824}

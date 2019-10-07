@@ -48,9 +48,6 @@ public class Tracker : MonoBehaviour
                 repulsion = false;
             }
         }
-    }
-
-    void LateUpdate(){
         electron.CheckIfFalling(true);
     }
 }
