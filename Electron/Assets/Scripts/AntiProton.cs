@@ -12,6 +12,7 @@ public class AntiProton : MonoBehaviour
     private Collider2D col2D;
     public Orbit orbit;
     public Repulse repulse;
+    private float radius;
 
     private void Start(){
         electronRB = electron.CheckIfAntiMatter(false);
@@ -25,6 +26,8 @@ public class AntiProton : MonoBehaviour
             repulse.FindDifference(electronRB.position, transform.position);
         }
         else{
+            Vector2 radiusVector = electron.antielectronG.transform.position - gameObject.GetComponentInParent<Transform>().position;
+            radius = radiusVector.magnitude;
             orbit.EnterCollider(antielectronRB.transform, gameObject.GetComponentInParent<Transform>(), electron.antielectronIsFalling);
             Destroy(col2D);
         }
@@ -42,7 +45,7 @@ public class AntiProton : MonoBehaviour
     }
 
     void Update(){
-        orbit.ExecuteOrbit(antielectronRB.transform, transform);
+        orbit.ExecuteOrbit(antielectronRB.transform, transform, radius);
         electron.CheckIfFalling(true);
     }
 

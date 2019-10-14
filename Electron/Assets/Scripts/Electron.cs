@@ -12,11 +12,7 @@ public class Electron
     [HideInInspector]
     public bool antielectronIsFalling;
     [HideInInspector]
-    [Range(0f, 1f)]
-    public float energy = 1f;
-    [HideInInspector]
     public float fallingBonus = 0.01f;
-    [HideInInspector]
     public float jumpEnergy = 0.013f;
     private float antielectronTempY;
     private float electronTempY;
@@ -36,15 +32,6 @@ public class Electron
             Rigidbody2D electronRB = electronG.GetComponent<Rigidbody2D>();
             return electronRB;
         }
-    }
-
-    public void EnergyBalance(){
-        if(energy >= 0f && energy <= 1f)
-            energy = electronIsFalling ? energy + fallingBonus : energy - jumpEnergy;
-        else if(energy < 0f)
-            energy = 0f;
-        else if(energy > 1f)
-            energy = 1f;
     }
 
     public void CheckIfFalling(bool antimatter){

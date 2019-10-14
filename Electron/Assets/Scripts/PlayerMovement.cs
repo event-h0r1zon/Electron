@@ -8,12 +8,16 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour{
 
     private Rigidbody2D rb;
+    public Slider slider;
     [SerializeField]
     private Vector2 jumpForce = new Vector2(6f, 5f);
     public Electron electron;
+    private float energy;
 
     private void Start(){
         rb = electron.CheckIfAntiMatter(false);
+        slider.value = 1f;
+        energy = 1f;
     }
 
     private void touchSetter(Vector2 jumpForce){
@@ -40,5 +44,20 @@ public class PlayerMovement : MonoBehaviour{
 
     private void FixedUpdate(){
         touchSetter(jumpForce);
+    }
+
+    private void Update(){
+        electron.CheckIfFalling(false);
+        EnergyBalance();
+        slider.value = energy;
+    }
+
+    private void EnergyBalance(){
+        if(energy >= 0f && energy <= 1f)
+            energy = electron.electronIsFalling ? energy + electron.fallingBonus/7 : energy - electron.jumpEnergy/10;
+        else if(energy > 1f)
+            energy = 1f;
+        else if(energy < 0f)
+            energy = 0f;
     }
 }

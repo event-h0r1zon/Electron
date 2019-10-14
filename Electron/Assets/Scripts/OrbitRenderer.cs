@@ -9,6 +9,7 @@ public class OrbitRenderer : MonoBehaviour
     [Range(3, 200)]
     public int segments;
     public Orbit orbit;
+    public float radius;
 
     void Awake(){
         lineRenderer = GetComponent<LineRenderer>();
@@ -18,7 +19,7 @@ public class OrbitRenderer : MonoBehaviour
     private void CalculateOrbit(){
         Vector3[] points = new Vector3[segments + 1];
         for(int i = 0; i < segments; i++){
-            Vector2 orbitPos = orbit.SetOrbitPosition((float)i/(float)segments);
+            Vector2 orbitPos = orbit.SetOrbitPosition((float)i/(float)segments, radius);
             points[i] = new Vector2(orbitPos.x + transform.position.x, orbitPos.y + transform.position.y);
         }
         points[segments] = points[0];

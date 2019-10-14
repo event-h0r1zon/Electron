@@ -10,10 +10,6 @@ public class Orbit
     private bool progressDirector;
     private float orbitProgression = 0f;
 
-    public Orbit(float radius){
-        this.radius = radius;
-    }
-
     public void EnterCollider(Transform electronPos, Transform protonPos, bool isFalling){
         enteredOrbit = true;
         setProgression = true;
@@ -23,14 +19,14 @@ public class Orbit
             progressDirector = isFalling ? true : false;
     }
 
-    public void ExecuteOrbit(Transform electronPos, Transform protonPos){
+    public void ExecuteOrbit(Transform electronPos, Transform protonPos, float radius){
         if(enteredOrbit){
             if(setProgression){
                 orbitProgression = SetOrbitProgression(electronPos.position, protonPos.position);
                 setProgression = false;
             }
             else{
-                SetElectronPosition(electronPos, protonPos);
+                SetElectronPosition(electronPos, protonPos, radius);
                 orbitProgression = (progressDirector) ? orbitProgression + 0.011f : orbitProgression - 0.011f;
                 if(orbitProgression >= 1f)
                     orbitProgression = 0f;
@@ -52,29 +48,29 @@ public class Orbit
 
     public float SetOrbitProgression(Vector2 objectEnteringPosition, Vector2 protonPosition){
         
-        //Base Zone
-        if(objectEnteringPosition.y >= protonPosition.y && objectEnteringPosition.x >= protonPosition.x){
-            
-        }
-        // 90 degree zone
-        else if(objectEnteringPosition.y >= protonPosition.y && objectEnteringPosition.x < protonPosition.x){
-            
-        }
-        // 180 degree zone
-        else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x >= protonPosition.x){
-            
-        }
-        //270 degree zone
-        else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x < protonPosition.x){
-            
-        }
+        Vector2 radiusVector = objectEnteringPosition - protonPosition;
+        float radius = radiusVector.magnitude;
+        float angle = 0;
 
+        //Base Zone
+        if(objectEnteringPosition.y >= protonPosition.y && objectEnteringPosition.x >= protonPosition.x)
+            angle = (Mathf.Asin(radiusVector.x/radius)) * Mathf.Rad2Deg;
+        // 90 degree zone
+        else if(objectEnteringPosition.y > protonPosition.y && objectEnteringPosition.x < protonPosition.x)
+            angle = (Mathf.Asin(radiusVector.x/radius)) * Mathf.Rad2Deg;
+        //180 degree zone
+        else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x < protonPosition.x)
+            angle = (-Mathf.Acos(radiusVector.y/radius)) * Mathf.Rad2Deg;
+        //270 degree zone
+        else if(objectEnteringPosition.y <= protonPosition.y && objectEnteringPosition.x >= protonPosition.x)
+            angle = (Mathf.Acos(radiusVector.y/radius)) * Mathf.Rad2Deg;
+        
         float progression = angle/360;
         return progression;
     }
 
-    public void SetElectronPosition(Transform electronPos, Transform protonPos){
-        Vector2 orbitPosition = SetOrbitPosition(orbitProgression);
+    public void SetElectronPosition(Transform electronPos, Transform protonPos, float radius){
+        Vector2 orbitPosition = SetOrbitPosition(orbitProgression, radius);
         electronPos.position = new Vector2(orbitPosition.x + protonPos.position.x, orbitPosition.y + protonPos.position.y);
     }
 }
