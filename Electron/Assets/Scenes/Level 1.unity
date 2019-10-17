@@ -552,6 +552,8 @@ GameObject:
   m_Component:
   - component: {fileID: 332360650}
   - component: {fileID: 332360649}
+  - component: {fileID: 332360651}
+  - component: {fileID: 332360652}
   m_Layer: 0
   m_Name: Current
   m_TagString: Untagged
@@ -622,6 +624,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &332360651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332360648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf4de6d1e93839458e6b7242fc7450e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  electronInCurrent: 0
+  directionValue: 1
+  electron:
+    electronG: {fileID: 1898155413}
+    antielectronG: {fileID: 65692824}
+    electronIsFalling: 0
+    antielectronIsFalling: 0
+    fallingBonus: 0.1
+    jumpEnergy: 0.1
+--- !u!61 &332360652
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332360648}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -2}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 19.2, y: 10.8}
+    newSize: {x: 19.2, y: 10.8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 19.2, y: 5}
+  m_EdgeRadius: 0
 --- !u!1 &387942822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,7 +1777,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1898155413}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -72.7, y: -23.4, z: -4.397673}
+  m_LocalPosition: {x: -72.7, y: 10, z: -4.397673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2019169654}
@@ -1787,6 +1836,7 @@ MonoBehaviour:
   slider: {fileID: 437803056}
   proton: {fileID: 1828487639}
   antiproton: {fileID: 1892609773}
+  current: {fileID: 332360648}
   jumpForce: {x: 13, y: 13}
   electron:
     electronG: {fileID: 1898155413}

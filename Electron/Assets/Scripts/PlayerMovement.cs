@@ -11,8 +11,10 @@ public class PlayerMovement : MonoBehaviour{
     public Slider slider;
     public GameObject proton;
     public GameObject antiproton;
+    public GameObject current;
     private AntiProton antiProtonScript;
     private ProtonOrbit protonOrbit;
+    private Current currentScript;
     [SerializeField]
     private Vector2 jumpForce = new Vector2(6f, 5f);
     public Electron electron;
@@ -22,6 +24,7 @@ public class PlayerMovement : MonoBehaviour{
         rb = electron.CheckIfAntiMatter(false);
         protonOrbit = proton.GetComponent<ProtonOrbit>();
         antiProtonScript = antiproton.GetComponent<AntiProton>();
+        currentScript = current.GetComponent<Current>();
         slider.value = 1f;
         energy = 1f;
     }
@@ -49,9 +52,9 @@ public class PlayerMovement : MonoBehaviour{
     }
 
     private void FixedUpdate(){
-        if(energy > 0f)
+        if(energy > 0f && !currentScript.electronInCurrent)
             touchSetter(jumpForce);
-        else{
+        else if(energy <= 0f){
             Destroy(gameObject);
         }
     }
@@ -68,10 +71,12 @@ public class PlayerMovement : MonoBehaviour{
     }
 
     private void EnergyBalance(){
-        if(energy >= 0f && energy <= 1f && !protonOrbit.electronInOrbit)
+        if(energy >= 0f && energy <= 1f && !protonOrbit.electronInOrbit && !currentScript.electronInCurrent)
             energy = electron.electronIsFalling ? energy + electron.fallingBonus/12 : energy - electron.jumpEnergy/10;
         else if(protonOrbit.electronInOrbit)
             energy += electron.fallingBonus/10; 
+        else if(currentScript.electronInCurrent)
+            energy -= electron.jumpEnergy/100;
         else if(energy > 1f)
             energy = 1f;
         else if(energy < 0f)

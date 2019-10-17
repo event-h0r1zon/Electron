@@ -11,7 +11,7 @@ public class ProtonOrbit : MonoBehaviour
     private float radius;
     public bool electronInOrbit = false;
 
-    void OnTriggerEnter2D(Collider2D other){;
+    void OnTriggerEnter2D(Collider2D other){
         if(other.tag == "Player"){
             electronInOrbit = true;
             Vector2 radiusVector = electron.electronG.transform.position - gameObject.GetComponentInParent<Transform>().position;
