@@ -13,6 +13,7 @@ public class AntiProton : MonoBehaviour
     public Orbit orbit;
     public Repulse repulse;
     private float radius;
+    public bool electronPushedBack = false;
 
     private void Start(){
         electronRB = electron.CheckIfAntiMatter(false);
@@ -38,6 +39,7 @@ public class AntiProton : MonoBehaviour
 
         if(electronRB != null && enteredZone){
             electronRB.velocity = repulse.PushBackVelocity(electronRB.position, transform.position);
+            electronPushedBack = true;
             enteredZone = false;
         }
         else

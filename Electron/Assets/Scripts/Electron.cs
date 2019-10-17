@@ -11,11 +11,11 @@ public class Electron
     public bool electronIsFalling;
     [HideInInspector]
     public bool antielectronIsFalling;
-    [HideInInspector]
     public float fallingBonus = 0.01f;
     public float jumpEnergy = 0.013f;
     private float antielectronTempY;
     private float electronTempY;
+
     public Electron(bool antimatter){
         if(antimatter)
             antielectronTempY = antielectronG.transform.position.y;

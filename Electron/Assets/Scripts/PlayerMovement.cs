@@ -9,6 +9,10 @@ public class PlayerMovement : MonoBehaviour{
 
     private Rigidbody2D rb;
     public Slider slider;
+    public GameObject proton;
+    public GameObject antiproton;
+    private AntiProton antiProtonScript;
+    private ProtonOrbit protonOrbit;
     [SerializeField]
     private Vector2 jumpForce = new Vector2(6f, 5f);
     public Electron electron;
@@ -16,6 +20,8 @@ public class PlayerMovement : MonoBehaviour{
 
     private void Start(){
         rb = electron.CheckIfAntiMatter(false);
+        protonOrbit = proton.GetComponent<ProtonOrbit>();
+        antiProtonScript = antiproton.GetComponent<AntiProton>();
         slider.value = 1f;
         energy = 1f;
     }
@@ -43,18 +49,29 @@ public class PlayerMovement : MonoBehaviour{
     }
 
     private void FixedUpdate(){
-        touchSetter(jumpForce);
+        if(energy > 0f)
+            touchSetter(jumpForce);
+        else{
+            Destroy(gameObject);
+        }
     }
 
     private void Update(){
         electron.CheckIfFalling(false);
-        EnergyBalance();
+        if(!antiProtonScript.electronPushedBack)
+            EnergyBalance();
+        else{
+            energy -= 0.2f;
+            antiProtonScript.electronPushedBack = false;
+        }
         slider.value = energy;
     }
 
     private void EnergyBalance(){
-        if(energy >= 0f && energy <= 1f)
-            energy = electron.electronIsFalling ? energy + electron.fallingBonus/7 : energy - electron.jumpEnergy/10;
+        if(energy >= 0f && energy <= 1f && !protonOrbit.electronInOrbit)
+            energy = electron.electronIsFalling ? energy + electron.fallingBonus/12 : energy - electron.jumpEnergy/10;
+        else if(protonOrbit.electronInOrbit)
+            energy += electron.fallingBonus/10; 
         else if(energy > 1f)
             energy = 1f;
         else if(energy < 0f)
