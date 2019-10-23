@@ -35,7 +35,7 @@ public class Electron
     }
 
     public void CheckIfFalling(bool antimatter){
-        if(antimatter){
+        if(antimatter && antielectronG != null){
             if(antielectronTempY > antielectronG.transform.position.y)
                 antielectronIsFalling = true;
             else
@@ -43,7 +43,7 @@ public class Electron
                 
             antielectronTempY = antielectronG.transform.position.y;
         }
-        else{
+        else if(!antimatter && electronG != null){
             if(electronTempY > electronG.transform.position.y)
                 electronIsFalling = true;
             else if(electronTempY <= electronG.transform.position.y)

@@ -47,7 +47,8 @@ public class AntiProton : MonoBehaviour
     }
 
     void Update(){
-        orbit.ExecuteOrbit(antielectronRB.transform, transform, radius);
+        if(electron.antielectronG != null)
+            orbit.ExecuteOrbit(antielectronRB.transform, transform, radius);
         electron.CheckIfFalling(true);
     }
 
