@@ -6,12 +6,13 @@ public class Tracker : MonoBehaviour
 {
     public Transform proton;
     public Electron electron;
+    private float speed = 20f;
     public Repulse repulse;
+    private float rotateSpeed = 1000f;
     private Rigidbody2D antielectronRB;
     private Rigidbody2D electronRB;
-    private bool repulsion;
+    private bool repulsion = false;
     private bool destroy = false;
-    public float G = 1;
 
     void OnTriggerEnter2D(Collider2D other){
         if(other.tag == "Player")
@@ -28,25 +29,33 @@ public class Tracker : MonoBehaviour
     }
 
     void FixedUpdate(){
-        if(electron.electronG == null || electron.antielectronG == null)
+        if (electron.electronG == null || electron.antielectronG == null)
             return;
-        else{
-            Vector2 difference = electronRB.position - antielectronRB.position;
-            float radius = difference.magnitude;
-            float gravitationalForce = G*(antielectronRB.mass*electronRB.mass)/Mathf.Pow(radius, 2);
-            Vector2 force = difference.normalized * gravitationalForce;
+        else if (repulsion)
+        {
+            antielectronRB.velocity = repulse.PushBackVelocity(antielectronRB.position, proton.position);
+            repulsion = false;
+        }
+        else
+        {
+            Vector2 direction = electronRB.position - antielectronRB.position;
 
-            antielectronRB.AddForce(force, ForceMode2D.Force);
+            direction.Normalize();
 
-            if(destroy){
-                Destroy(electron.antielectronG);
-                Destroy(electron.electronG);  
-            }
+            float rotateAmount = Vector3.Cross(direction, transform.up).z;
 
-            else if(repulsion == true){
-                antielectronRB.velocity = repulse.PushBackVelocity(antielectronRB.position, proton.position);
-                repulsion = false;
-            }
+            antielectronRB.angularVelocity = -rotateAmount * rotateSpeed;
+
+            antielectronRB.velocity = transform.up * speed;
+        }
+    }
+
+    private void Update()
+    {
+        if (destroy)
+        {
+            Destroy(electron.antielectronG);
+            Destroy(electron.electronG);
         }
     }
 }

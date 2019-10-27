@@ -26,7 +26,7 @@ public class AntiProton : MonoBehaviour
             enteredZone = true;
             repulse.FindDifference(electronRB.position, transform.position);
         }
-        else{
+        else if(other.tag == "Positron"){
             Vector2 radiusVector = electron.antielectronG.transform.position - gameObject.GetComponentInParent<Transform>().position;
             radius = radiusVector.magnitude;
             orbit.EnterCollider(antielectronRB.transform, gameObject.GetComponentInParent<Transform>(), electron.antielectronIsFalling);

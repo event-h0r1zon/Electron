@@ -11,8 +11,6 @@ public class Electron
     public bool electronIsFalling;
     [HideInInspector]
     public bool antielectronIsFalling;
-    public float fallingBonus = 0.01f;
-    public float jumpEnergy = 0.013f;
     private float antielectronTempY;
     private float electronTempY;
 

@@ -16,30 +16,30 @@ public class Repulse
     public Vector2 PushBackVelocity(Vector2 repulsedObject, Vector2 repulsingObject){
         if(repulsedObject.x > repulsingObject.x && repulsedObject.y > repulsingObject.y){
             if(differenceInX >= differenceInY)
-                return new Vector2(10f, 6f);
+                return new Vector2(10f, 6f) * 2f;
             else
-                return new Vector2(6f, 14f);
+                return new Vector2(6f, 14f) * 2f;
         }
 
         else if(repulsedObject.x < repulsingObject.x && repulsedObject.y > repulsingObject.y){
             if(differenceInX >= differenceInY)
-                return new Vector2(-10f, 4f);
+                return new Vector2(-10f, 4f) * 2f;
             else
-                return new Vector2(-4f, 14f);
+                return new Vector2(-4f, 14f) * 2f;
         }
 
         else if(repulsedObject.x > repulsingObject.x && repulsedObject.y < repulsingObject.y){
             if(differenceInX >= differenceInY)
-                return new Vector2(10f, -6f);
+                return new Vector2(10f, -6f) * 2f;
             else
-                return new Vector2(4f, -10f);
+                return new Vector2(4f, -10f) * 2f;
         }
 
         else if(repulsedObject.x < repulsingObject.x && repulsedObject.y < repulsingObject.y){
             if(differenceInX >= differenceInY)
-                return new Vector2(-10f, -6f);
+                return new Vector2(-10f, -6f) * 2f;
             else
-                return new Vector2(-6f, -10f);
+                return new Vector2(-6f, -10f) * 2f;
         }
 
         return Vector2.zero;
