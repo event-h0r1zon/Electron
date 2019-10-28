@@ -52,9 +52,8 @@ public class PlayerMovement : MonoBehaviour{
     {
         if (energy > 0f)
         {
-            if (Input.touchCount > 0 && Time.time - temporaryTime >= 0.2f)
+            if (Input.touchCount > 0 && Time.time - temporaryTime >= 0.2f && !protonOrbit.electronInOrbit)
             {
-                Debug.Log(Time.time - temporaryTime);
                 touchSetter(jumpForce);
                 temporaryTime = Time.time;
             }
