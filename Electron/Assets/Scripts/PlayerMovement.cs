@@ -29,7 +29,8 @@ public class PlayerMovement : MonoBehaviour{
 
     private void touchSetter(Vector2 jumpForce){
             Touch touch = Input.GetTouch(0);
-            switch (touch.phase){
+            switch (touch.phase)
+            {
                 case TouchPhase.Began:
                     JumpMechanic(jumpForce, touch.position);
                     break;
@@ -46,17 +47,15 @@ public class PlayerMovement : MonoBehaviour{
             rb.velocity = jumpForce;
         else
             rb.velocity = new Vector2(-jumpForce.x, jumpForce.y);
+        temporaryTime = Time.time;
     }
 
     private void FixedUpdate()
     {
         if (energy > 0f)
         {
-            if (Input.touchCount > 0 && Time.time - temporaryTime >= 0.2f && !protonOrbit.electronInOrbit)
-            {
+            if (Input.touchCount > 0 && Time.time - temporaryTime >= 0.35f && !protonOrbit.electronInOrbit)
                 touchSetter(jumpForce);
-                temporaryTime = Time.time;
-            }
         }
         else if (energy <= 0f)
             Destroy(gameObject);
@@ -84,10 +83,8 @@ public class PlayerMovement : MonoBehaviour{
 
     IEnumerator JumpDecrease()
     {
-        energy -= jumpEnergy / 6;
-
-        yield return new WaitForSeconds(0.2f);
-
+        energy -= jumpEnergy / 7;
+        yield return new WaitForSeconds(0.15f);
         jumped = false;
     }
 }

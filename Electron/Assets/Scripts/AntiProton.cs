@@ -7,9 +7,10 @@ public class AntiProton : MonoBehaviour
 {
     private bool enteredZone = false;
     public Electron electron;
-    private Rigidbody2D antielectronRB;
+    public GameObject[] positrons;
     private Rigidbody2D electronRB;
     private Collider2D col2D;
+    private int enteredPositron;
     public Orbit orbit;
     public Repulse repulse;
     private float radius;
@@ -17,22 +18,32 @@ public class AntiProton : MonoBehaviour
 
     private void Start(){
         electronRB = electron.CheckIfAntiMatter(false);
-        antielectronRB = electron.CheckIfAntiMatter(true);
         col2D = GetComponent<Collider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D other){
-        if(other.tag == "Player"){
+        if(other.tag == "Player")
             enteredZone = true;
-            repulse.FindDifference(electronRB.position, transform.position);
+        else if(other.tag == "Positron")
+        {
+            GetRadius(positrons[0].transform.position, GetComponentInParent<Transform>(), 0);
+            enteredPositron = 1;
         }
-        else if(other.tag == "Positron"){
-            Vector2 radiusVector = electron.antielectronG.transform.position - gameObject.GetComponentInParent<Transform>().position;
-            radius = radiusVector.magnitude;
-            orbit.EnterCollider(antielectronRB.transform, gameObject.GetComponentInParent<Transform>(), electron.antielectronIsFalling);
-            Destroy(col2D);
+        else if(other.tag == "Positron-1")
+        {
+            GetRadius(positrons[1].transform.position, GetComponentInParent<Transform>(), 1);
+            enteredPositron = 2;
         }
-        
+        else if (other.tag == "Positron-2")
+        {
+            GetRadius(positrons[2].transform.position, GetComponentInParent<Transform>(), 2);
+            enteredPositron = 3;
+        }
+        else if (other.tag == "Positron-3")
+        {
+            GetRadius(positrons[3].transform.position, GetComponentInParent<Transform>(), 3);
+            enteredPositron = 4;
+        }
     }
 
     void FixedUpdate(){
@@ -47,9 +58,34 @@ public class AntiProton : MonoBehaviour
     }
 
     void Update(){
-        if(electron.antielectronG != null)
-            orbit.ExecuteOrbit(antielectronRB.transform, transform, radius);
+        if (electron.antielectronG != null)
+        {
+            switch (enteredPositron)
+            {
+                case 1:
+                    orbit.ExecuteOrbit(positrons[0].transform, transform, radius);
+                    break;
+                case 2:
+                    orbit.ExecuteOrbit(positrons[1].transform, transform, radius);
+                    break;
+                case 3:
+                    orbit.ExecuteOrbit(positrons[2].transform, transform, radius);
+                    break;
+                case 4:
+                    orbit.ExecuteOrbit(positrons[3].transform, transform, radius);
+                    break;
+
+            }
+        }
         electron.CheckIfFalling(true);
     }
 
+    void GetRadius(Vector2 positronPosition, Transform antiprotonPosition, int certainPositron)
+    {
+        Vector2 antiprotonVector = new Vector2(antiprotonPosition.position.x, antiprotonPosition.position.y);
+        Vector2 radiusVector = positronPosition - antiprotonVector;
+        radius = radiusVector.magnitude;
+        orbit.EnterCollider(positrons[certainPositron].transform, antiprotonPosition, electron.antielectronIsFalling);
+        Destroy(col2D);
+    }
 }

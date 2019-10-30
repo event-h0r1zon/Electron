@@ -19,11 +19,8 @@ public class Tracker : MonoBehaviour
     {
         if (other.tag == "Player")
             destroy = true;
-        else if(other.tag == "Proton")
-        {
-            repulse.FindDifference(antielectronRB.position, proton.transform.position);
+        else if (other.tag == "Proton")
             repulsion = true;
-        }
     }
 
     void Start()

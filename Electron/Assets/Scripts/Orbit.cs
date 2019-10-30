@@ -19,7 +19,8 @@ public class Orbit
             progressDirector = isFalling ? true : false;
     }
 
-    public void ExecuteOrbit(Transform electronPos, Transform protonPos, float radius){
+    public void ExecuteOrbit(Transform electronPos, Transform protonPos, float radius)
+    {
         if(enteredOrbit){
             if(setProgression){
                 orbitProgression = SetOrbitProgression(electronPos.position, protonPos.position);
