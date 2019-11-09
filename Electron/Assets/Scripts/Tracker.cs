@@ -5,11 +5,11 @@ using UnityEngine;
 public class Tracker : MonoBehaviour
 {
     public GameObject proton;
-    public ProtonOrbit orbitScript;
+    private ProtonOrbit orbitScript;
     public Electron electron;
     private float speed = 20f;
     public Repulse repulse;
-    private float rotateSpeed = 2000f;
+    private float rotateSpeed = 600f;
     private Rigidbody2D antielectronRB;
     private Rigidbody2D electronRB;
     private bool repulsion = false;
@@ -20,7 +20,7 @@ public class Tracker : MonoBehaviour
         if (other.tag == "Player")
             destroy = true;
         else if (other.tag == "Proton")
-            repulsion = true;
+            StartCoroutine(PushBack());
     }
 
     void Start()
@@ -33,19 +33,17 @@ public class Tracker : MonoBehaviour
     IEnumerator PushBack()
     {
         antielectronRB.velocity = repulse.PushBackVelocity(antielectronRB.position, proton.transform.position);
-        yield return new WaitForSeconds(0.7f);
+        repulsion = true;
+        yield return new WaitForSeconds(1f);
         repulsion = false;
     }
 
-    void FixedUpdate()
+    private void Update()
     {
-        if (electron.antielectronG == null)
-            return;
-        else if (repulsion)
-            StartCoroutine(PushBack());
-        else if (electronRB == null || orbitScript.electronInOrbit)
+        if (electronRB == null || orbitScript.electronInOrbit)
             antielectronRB.velocity = Vector2.zero;
-        else if (electron.electronG != null)
+
+        else if (electron.electronG != null && !repulsion)
         {
             Vector2 direction = electronRB.position - antielectronRB.position;
 
@@ -57,10 +55,7 @@ public class Tracker : MonoBehaviour
 
             antielectronRB.velocity = transform.up * speed;
         }
-    }
 
-    private void Update()
-    {
         if (destroy)
         {
             Destroy(electron.antielectronG);

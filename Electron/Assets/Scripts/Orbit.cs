@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Orbit
 {
+    [HideInInspector]
     public bool enteredOrbit = false;
     private bool setProgression = false;
     private bool progressDirector;

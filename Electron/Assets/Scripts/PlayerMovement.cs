@@ -12,34 +12,46 @@ public class PlayerMovement : MonoBehaviour{
     public float rotation2;
     public float pushForce;
     public float fallingBonus = 0.1f;
-    public float duration;
+    public float superpositionDuration;
     public float jumpEnergy = 0.15f;
+    public float antiprotonEnergyDecrease;
     public Vector2 jumpForce = new Vector2(6f, 5f);
-    [HideInInspector]
-    public float energy;
+    public float slowdownFactor;
+    public float energyDecreaseDuration = 0.5f;
+    public float jumpDelay = 0.35f;
+    public float superpositionDelay = 0.1f;
 
     //Private variables
     private bool jumped = false;
-    private float temporaryTime = 0f;
+    private float temporaryJumpTime = 0f;
+    private float temporarySuperPositionTime = 0f;
+    private float energy;
 
     //Public monobehaviors
     public Slider slider;
     public GameObject proton;
     public GameObject quantumEnergy;
+    public GameObject antiproton;
     public GameObject superpositioner;
     public Electron electron;
 
     //Private monobehaviors
     private ProtonOrbit protonOrbit;
     private EnergyAdder energyAdder;
+    private AntiProton antiprotonScript;
     private Superpositioner superpositionerScript;
     private Rigidbody2D rb;
 
+    //Runtime functions
+
     private void Start(){
+
         rb = electron.CheckIfAntiMatter(false);
         protonOrbit = proton.GetComponent<ProtonOrbit>();
+        antiprotonScript = antiproton.GetComponent<AntiProton>();
         superpositionerScript = superpositioner.GetComponent<Superpositioner>();
         energyAdder = quantumEnergy.GetComponent<EnergyAdder>();
+
         slider.value = 1f;
         energy = 1f;
     }
@@ -48,24 +60,29 @@ public class PlayerMovement : MonoBehaviour{
 
         if (energy > 0f)
         {
-            if (Input.touchCount > 0 && Time.time - temporaryTime >= 0.35f && !protonOrbit.electronInOrbit && !superpositionerScript.setVelocity)
+            if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !superpositionerScript.setVelocity)
                 touchSetter(jumpForce);
         }
         else if (energy <= 0f)
             Destroy(gameObject);
 
 
-        if (superpositionerScript.setVelocity)
+        if (superpositionerScript.setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
             StartCoroutine(setSuperPosition());
 
         if (energyAdder.booster)
             StartCoroutine(AddEnergy());
+
+        if (antiprotonScript.lowerEnergy)
+            StartCoroutine(LowerEnergy());
 
         electron.CheckIfFalling(false);
         EnergyBalance();
         
         slider.value = energy;
     }
+
+    //Reusable functions
 
     private void EnergyBalance(){
         if (energy > 1f)
@@ -101,7 +118,7 @@ public class PlayerMovement : MonoBehaviour{
             rb.velocity = jumpForce;
         else
             rb.velocity = new Vector2(-jumpForce.x, jumpForce.y);
-        temporaryTime = Time.time;
+        temporaryJumpTime = Time.time;
     }
 
     //Coroutines
@@ -123,11 +140,13 @@ public class PlayerMovement : MonoBehaviour{
         Vector2 velocity = new Vector2(x, y);
 
         rb.velocity = velocity;
+        temporarySuperPositionTime = Time.time;
 
         Destroy(superpositioner);
 
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(superpositionDuration);
 
+        rb.velocity = velocity/slowdownFactor; 
         superpositionerScript.setVelocity = false;
     }
 
@@ -137,5 +156,12 @@ public class PlayerMovement : MonoBehaviour{
         Destroy(quantumEnergy);
         yield return new WaitForSeconds(0.5f);
         energyAdder.booster = false;
+    }
+
+    IEnumerator LowerEnergy()
+    {
+        energy -= 0.05f;
+        yield return new WaitForSeconds(energyDecreaseDuration);
+        antiprotonScript.lowerEnergy = false;
     }
 }

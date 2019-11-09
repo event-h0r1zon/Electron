@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class ProtonOrbit : MonoBehaviour
 {
     public Electron electron;
+    [HideInInspector]
     public Orbit orbit;
     private Collider2D col2D;
     private float radius;
+    [HideInInspector]
     public bool electronInOrbit = false;
 
     void OnTriggerEnter2D(Collider2D other){

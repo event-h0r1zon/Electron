@@ -6,30 +6,37 @@ using UnityEngine.UI;
 public class AntiProton : MonoBehaviour
 {
     private bool enteredZone = false;
+    [HideInInspector]
+    public bool lowerEnergy = false;
     public Electron electron;
     public GameObject[] positrons;
     private Rigidbody2D electronRB;
     private Collider2D col2D;
     private int enteredPositron;
+    [HideInInspector]
     public Orbit orbit;
     public Repulse repulse;
     private float radius;
-    public bool electronPushedBack = false;
 
-    private void Start(){
+    private void Start()
+    {
         electronRB = electron.CheckIfAntiMatter(false);
         col2D = GetComponent<Collider2D>();
     }
 
-    private void OnTriggerEnter2D(Collider2D other){
-        if(other.tag == "Player")
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
             enteredZone = true;
-        else if(other.tag == "Positron")
+            lowerEnergy = true;
+        }
+        else if (other.tag == "Positron")
         {
             GetRadius(positrons[0].transform.position, GetComponentInParent<Transform>(), 0);
             enteredPositron = 1;
         }
-        else if(other.tag == "Positron-1")
+        else if (other.tag == "Positron-1")
         {
             GetRadius(positrons[1].transform.position, GetComponentInParent<Transform>(), 1);
             enteredPositron = 2;
@@ -46,18 +53,20 @@ public class AntiProton : MonoBehaviour
         }
     }
 
-    void FixedUpdate(){
+    void FixedUpdate()
+    {
 
-        if(electronRB != null && enteredZone){
+        if (electronRB != null && enteredZone)
+        {
             electronRB.velocity = repulse.PushBackVelocity(electronRB.position, transform.position);
-            electronPushedBack = true;
             enteredZone = false;
         }
         else
             return;
     }
 
-    void Update(){
+    void Update()
+    {
         if (electron.antielectronG != null)
         {
             switch (enteredPositron)
