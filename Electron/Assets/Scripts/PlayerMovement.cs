@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour{
     public float energyDecreaseDuration = 0.5f;
     public float jumpDelay = 0.35f;
     public float superpositionDelay = 0.1f;
+    public float startDelay = 3f;
 
     //Private variables
     private bool jumped = false;
@@ -57,29 +58,34 @@ public class PlayerMovement : MonoBehaviour{
     }
 
     private void Update(){
-
-        if (energy > 0f)
+        if (Time.time >= startDelay)
         {
-            if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !superpositionerScript.setVelocity)
-                touchSetter(jumpForce);
+            rb.gravityScale = 5f;
+            if (energy > 0f)
+            {
+                if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !superpositionerScript.setVelocity)
+                    touchSetter(jumpForce);
+            }
+            else if (energy <= 0f)
+                Destroy(gameObject);
+
+
+            if (superpositionerScript.setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
+                StartCoroutine(setSuperPosition());
+
+            if (energyAdder.booster)
+                StartCoroutine(AddEnergy());
+
+            if (antiprotonScript.lowerEnergy)
+                StartCoroutine(LowerEnergy());
+
+            electron.CheckIfFalling(false);
+            EnergyBalance();
+
+            slider.value = energy;
         }
-        else if (energy <= 0f)
-            Destroy(gameObject);
-
-
-        if (superpositionerScript.setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
-            StartCoroutine(setSuperPosition());
-
-        if (energyAdder.booster)
-            StartCoroutine(AddEnergy());
-
-        if (antiprotonScript.lowerEnergy)
-            StartCoroutine(LowerEnergy());
-
-        electron.CheckIfFalling(false);
-        EnergyBalance();
-        
-        slider.value = energy;
+        else
+            rb.gravityScale = 0f;
     }
 
     //Reusable functions
@@ -160,7 +166,7 @@ public class PlayerMovement : MonoBehaviour{
 
     IEnumerator LowerEnergy()
     {
-        energy -= 0.05f;
+        energy -= 0.03f;
         yield return new WaitForSeconds(energyDecreaseDuration);
         antiprotonScript.lowerEnergy = false;
     }

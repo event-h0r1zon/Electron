@@ -43,7 +43,7 @@ public class Tracker : MonoBehaviour
         if (electronRB == null || orbitScript.electronInOrbit)
             antielectronRB.velocity = Vector2.zero;
 
-        else if (electron.electronG != null && !repulsion)
+        else if (electron.electronG != null && !repulsion && Time.time >= 2f)
         {
             Vector2 direction = electronRB.position - antielectronRB.position;
 
