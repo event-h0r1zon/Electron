@@ -4,12 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Positron
-  - Proton
   - Antiproton
-  - Positron-1
-  - Positron-2
-  - Positron-3
+  - Bonus
+  - Superpositioner
   layers:
   - Default
   - TransparentFX

@@ -19,7 +19,7 @@ public class Tracker : MonoBehaviour
     {
         if (other.tag == "Player")
             destroy = true;
-        else if (other.tag == "Proton")
+        else if (other.name == "Proton")
             StartCoroutine(PushBack());
     }
 
@@ -40,6 +40,8 @@ public class Tracker : MonoBehaviour
 
     private void Update()
     {
+        electron.CheckIfFalling(true);
+
         if (electronRB == null || orbitScript.electronInOrbit)
             antielectronRB.velocity = Vector2.zero;
 

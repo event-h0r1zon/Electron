@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnergyAdder : MonoBehaviour
 {
-    public float energyBonus;
     [HideInInspector]
     public bool booster = false;
 
