@@ -12,6 +12,8 @@ public class Tracker : MonoBehaviour
     private float rotateSpeed = 600f;
     private Rigidbody2D antielectronRB;
     private Rigidbody2D electronRB;
+    private float temporaryY;
+    private int currentPositron;
     private bool repulsion = false;
     private bool destroy = false;
 
@@ -25,8 +27,14 @@ public class Tracker : MonoBehaviour
 
     void Start()
     {
-        antielectronRB = electron.CheckIfAntiMatter(true);
-        electronRB = electron.CheckIfAntiMatter(false);
+        if (gameObject.name.Length >= 10)
+            currentPositron = gameObject.name[10] - '0';
+        else
+            currentPositron = 0;
+        electron.AssignGameObjects();
+        temporaryY = gameObject.transform.position.y;
+        antielectronRB = electron.positrons[currentPositron].GetComponent<Rigidbody2D>();
+        electronRB = electron.electron.GetComponent<Rigidbody2D>();
         orbitScript = proton.GetComponentInChildren<ProtonOrbit>();
     }
 
@@ -40,12 +48,12 @@ public class Tracker : MonoBehaviour
 
     private void Update()
     {
-        electron.CheckIfFalling(true);
+        electron.PositronFalling(currentPositron, temporaryY);
 
         if (electronRB == null || orbitScript.electronInOrbit)
             antielectronRB.velocity = Vector2.zero;
 
-        else if (electron.electronG != null && !repulsion && Time.time >= 2f)
+        else if (electron.electron != null && !repulsion && Time.time >= 2f)
         {
             Vector2 direction = electronRB.position - antielectronRB.position;
 
@@ -60,8 +68,8 @@ public class Tracker : MonoBehaviour
 
         if (destroy)
         {
-            Destroy(electron.antielectronG);
-            Destroy(electron.electronG);
+            Destroy(electron.positrons[currentPositron]);
+            Destroy(electron.electron);
         }
     }
 }

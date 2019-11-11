@@ -6,10 +6,15 @@ using UnityEngine.UI;
 public class EnergyManager : MonoBehaviour
 {
     public Slider slider;
+    public GameObject Pause;
+    private PauseMenu pauseScript;
     public float energyBonus;
     public float energyDecreaseDuration;
+    private bool electronFalling;
     public Electron electron;
     private PlayerMovement electronProperties;
+    public GameObject proton;
+    private ProtonOrbit protonScript;
     public GameObject[] superpositions;
     public List<Superpositioner> superpositioners;
     public GameObject[] antiprotons;
@@ -21,11 +26,15 @@ public class EnergyManager : MonoBehaviour
 
     private void Awake()
     {
-        electronProperties = electron.electronG.GetComponent<PlayerMovement>();
+        electron.AssignGameObjects();
+        electronProperties = electron.electron.GetComponent<PlayerMovement>();
         slider.value = 1f;
+        pauseScript = Pause.GetComponent<PauseMenu>();
+        proton = GameObject.FindGameObjectWithTag("Proton");
         antiprotons = GameObject.FindGameObjectsWithTag("Antiproton");
-        superpositions = GameObject.FindGameObjectsWithTag("Superpositeners");
+        superpositions = GameObject.FindGameObjectsWithTag("Superpositioner");
         quantumEnergys = GameObject.FindGameObjectsWithTag("Bonus");
+        protonScript = proton.GetComponent<ProtonOrbit>();
         for (int i = 0; i < superpositions.Length; i++)
             superpositioners.Add(superpositions[i].GetComponent<Superpositioner>());
         for (int i = 0; i < quantumEnergys.Length; i++)
@@ -36,26 +45,45 @@ public class EnergyManager : MonoBehaviour
 
     private void Update()
     {
-        for(int i = 0; i < antiprotons.Length; i++)
-        {
-            if (antiprotonScripts[i].lowerEnergy)
-                StartCoroutine(LowerEnergy(i));
+        if (electron.electron != null && !pauseScript.slowingDown) {
+
+            electronFalling = electron.ElectronFalling();
+
+            if(slider.value > 0f)
+
+
+            for (int i = 0; i < antiprotons.Length; i++)
+            {
+                if (antiprotonScripts[i].lowerEnergy)
+                    StartCoroutine(LowerEnergy(i));
+            }
+            for (int i = 0; i < quantumEnergys.Length; i++)
+            {
+                if (energyAdders[i].booster)
+                    StartCoroutine(AddEnergy(i));
+            }
+            for (int i = 0; i < superpositions.Length; i++)
+            {
+                if (superpositioners[i].setVelocity)
+                    StartCoroutine(SuperpositionEnergy(i));
+            }
+
+            if (electronProperties.jumped)
+                StartCoroutine(JumpDecrease());
+
+            if (electronFalling)
+                slider.value += fallingBonus / 10f;
+
+            if (protonScript.electronInOrbit)
+                slider.value += fallingBonus / 10f;
+
+            if (slider.value <= 0f)
+                Destroy(electron.electron);
+
         }
-        for(int i = 0; i < quantumEnergys.Length; i++)
-        {
-            if (energyAdders[i].booster)
-                StartCoroutine(AddEnergy(i));
-        }
-        for(int i = 0; i < superpositions.Length; i++)
-        {
-            if (superpositioners[i].setVelocity)
-                StartCoroutine(SuperpositionEnergy(i));
-        }
-        electron.CheckIfFalling(false);
-        if (electronProperties.jumped)
-            StartCoroutine(JumpDecrease());
-        if (electron.electronIsFalling)
-            slider.value += fallingBonus / 5f;
+
+        else if (electron.electron == null)
+            slider.value -= fallingBonus / 10f;
     }
 
     IEnumerator JumpDecrease()
@@ -76,7 +104,7 @@ public class EnergyManager : MonoBehaviour
     {
         slider.value += energyBonus;
         Destroy(quantumEnergys[currentScript]);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         energyAdders[currentScript].booster = false;
     }
     IEnumerator SuperpositionEnergy(int currentScript)

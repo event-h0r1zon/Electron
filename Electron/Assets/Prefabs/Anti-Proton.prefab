@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8691871060501087192}
   m_Layer: 0
   m_Name: Anti-Proton
-  m_TagString: Antiproton
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 8691871061103212402}
   - component: {fileID: 8691871061103212401}
   m_Layer: 0
-  m_Name: Anti-Proton Sprite
+  m_Name: Anti-Proton
   m_TagString: Antiproton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -309,9 +309,6 @@ MonoBehaviour:
     antielectronG: {fileID: 0}
     electronIsFalling: 0
     antielectronIsFalling: 0
-  positrons:
-  - {fileID: 0}
-  - {fileID: 0}
   orbit:
     enteredOrbit: 0
   repulse:

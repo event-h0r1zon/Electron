@@ -5,49 +5,51 @@ using UnityEngine;
 [System.Serializable]
 public class Electron
 {
-    public GameObject electronG;
-    public GameObject antielectronG;
-    [HideInInspector]
-    public bool electronIsFalling;
-    [HideInInspector]
-    public bool antielectronIsFalling;
-    private float antielectronTempY;
-    private float electronTempY;
+    public GameObject electron;
+    public GameObject[] positrons;
+    private float temporaryElectronY;
 
-    public Electron(bool antimatter){
-        if(antimatter)
-            antielectronTempY = antielectronG.transform.position.y;
-        else
-            electronTempY = electronG.transform.position.y;
+    public void AssignGameObjects()
+    {
+        electron = GameObject.FindGameObjectWithTag("Player");
+        positrons = GameObject.FindGameObjectsWithTag("Positron");
     }
 
-    public Rigidbody2D CheckIfAntiMatter(bool antimatter){
-        if(antimatter){
-            Rigidbody2D antielectronRB = antielectronG.GetComponent<Rigidbody2D>();
-            return antielectronRB;
-        }
-        else{
-            Rigidbody2D electronRB = electronG.GetComponent<Rigidbody2D>();
-            return electronRB;
-        }
-    }
-
-    public void CheckIfFalling(bool antimatter){
-        if(antimatter && antielectronG != null){
-            if(antielectronTempY > antielectronG.transform.position.y)
-                antielectronIsFalling = true;
+    public bool ElectronFalling()
+    {
+        if (electron != null)
+        {
+            if (electron.transform.position.y < temporaryElectronY)
+            {
+                temporaryElectronY = electron.transform.position.y;
+                return true;
+            }
             else
-                antielectronIsFalling = false;
-                
-            antielectronTempY = antielectronG.transform.position.y;
+            {
+                temporaryElectronY = electron.transform.position.y;
+                return false;
+            }
         }
-        else if(!antimatter && electronG != null){
-            if(electronTempY > electronG.transform.position.y)
-                electronIsFalling = true;
-            else if(electronTempY <= electronG.transform.position.y)
-                electronIsFalling = false;
+        else
+            return false;
+    }
 
-            electronTempY = electronG.transform.position.y;
+    public bool PositronFalling(int certainPositron, float temporaryPositronY)
+    {
+        if (positrons[certainPositron] != null)
+        {
+            if (positrons[certainPositron].transform.position.y < temporaryPositronY)
+            {
+                temporaryPositronY = positrons[certainPositron].transform.position.y;
+                return true;
+            }
+            else
+            {
+                temporaryPositronY = positrons[certainPositron].transform.position.y;
+                return false;
+            }
         }
+        else
+            return false;
     }
 }

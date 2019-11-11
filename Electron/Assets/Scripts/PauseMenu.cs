@@ -7,6 +7,8 @@ public class PauseMenu : MonoBehaviour
     public GameObject panel;
     public float slowdownFactor;
     public float slowdownLength;
+    [HideInInspector]
+    public bool slowingDown;
 
     private void Update()
     {
@@ -15,8 +17,11 @@ public class PauseMenu : MonoBehaviour
 
         if (panel.activeSelf == true)
         {
+            slowingDown = true;
             SlowMotion();
         }
+        else if (panel.activeSelf == false)
+            slowingDown = false;
     }
 
     public void SlowMotion()

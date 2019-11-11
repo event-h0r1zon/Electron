@@ -10,7 +10,9 @@ public class AntiProton : MonoBehaviour
     public bool lowerEnergy = false;
     public Electron electron;
     private string enteringPositron;
+    private int currentPositron;
     private Rigidbody2D electronRB;
+    private float positronTmpY;
     private Collider2D col2D;
     [HideInInspector]
     public Orbit orbit;
@@ -19,7 +21,9 @@ public class AntiProton : MonoBehaviour
 
     private void Start()
     {
-        electronRB = electron.CheckIfAntiMatter(false);
+        electron.AssignGameObjects();
+        positronTmpY = electron.positrons[currentPositron].transform.position.y;
+        electronRB = electron.electron.GetComponent<Rigidbody2D>();
         col2D = GetComponent<Collider2D>();
     }
 
@@ -33,6 +37,10 @@ public class AntiProton : MonoBehaviour
         else
         {
             enteringPositron = other.name;
+            if (other.name.Length >= 10)
+                currentPositron = other.name[10] - '0';
+            else
+                currentPositron = 0;
             GetRadius(GameObject.Find(enteringPositron).transform, transform);
         }
     }
@@ -59,7 +67,7 @@ public class AntiProton : MonoBehaviour
     {
         Vector2 radiusVector = positronPosition.position - antiprotonPosition.position;
         radius = radiusVector.magnitude;
-        orbit.EnterCollider(positronPosition, antiprotonPosition, electron.antielectronIsFalling);
+        orbit.EnterCollider(positronPosition, antiprotonPosition, electron.PositronFalling(currentPositron, positronTmpY));
         Destroy(col2D);
     }
 }

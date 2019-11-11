@@ -99,7 +99,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -133,28 +133,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0868ad0ab0454524e905cce892a7f5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation1: -10
+  rotation1: 10
   rotation2: 40
   pushForce: 80
-  fallingBonus: 0.1
-  superpositionDuration: 0.5
-  jumpEnergy: 0.15
-  antiprotonEnergyDecrease: 0.01
+  jumped: 0
+  superpositionDuration: 0.3
   jumpForce: {x: 25, y: 20}
   slowdownFactor: 2.5
-  energyDecreaseDuration: 0.1
   jumpDelay: 0.35
   superpositionDelay: 0.05
-  slider: {fileID: 0}
+  startDelay: 2
   proton: {fileID: 0}
-  quantumEnergy: {fileID: 0}
-  antiproton: {fileID: 0}
-  superpositioner: {fileID: 0}
-  electron:
-    electronG: {fileID: 4903485577669258447}
-    antielectronG: {fileID: 0}
-    electronIsFalling: 0
-    antielectronIsFalling: 0
+  superpositioners: []
+  superpositionerScripts: []
 --- !u!1 &4903485577742391954
 GameObject:
   m_ObjectHideFlags: 0
