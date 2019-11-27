@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-
         rb = GetComponent<Rigidbody2D>();
         protonOrbit = proton.GetComponent<ProtonOrbit>();
         superpositioners = GameObject.FindGameObjectsWithTag("Superpositioner");
@@ -49,22 +48,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time >= startDelay)
+        for (int i = 0; i < superpositioners.Length; i++)
         {
-            for(int i = 0; i < superpositioners.Length; i++)
+            if (superpositionerScripts[i].setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
             {
-                if (superpositionerScripts[i].setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
-                {
-                    inSuperposition = true;
-                    StartCoroutine(setSuperPosition(i));
-                }
+                inSuperposition = true;
+                StartCoroutine(setSuperPosition(i));
             }
-            rb.gravityScale = 5f;
-            if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !inSuperposition)
-                touchSetter(jumpForce);
         }
-        else
-            rb.gravityScale = 0f;
+        if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !inSuperposition)
+            touchSetter(jumpForce);
     }
     private void touchSetter(Vector2 jumpForce)
     {

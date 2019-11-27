@@ -9,7 +9,7 @@ public class Tracker : MonoBehaviour
     public Electron electron;
     private float speed = 20f;
     public Repulse repulse;
-    private float rotateSpeed = 600f;
+    private float rotateSpeed = 400f;
     private Rigidbody2D antielectronRB;
     private Rigidbody2D electronRB;
     private float temporaryY;
@@ -21,17 +21,17 @@ public class Tracker : MonoBehaviour
     {
         if (other.tag == "Player")
             destroy = true;
-        else if (other.name == "Proton")
+        else if (other.name == "Proton Sprite")
             StartCoroutine(PushBack());
     }
 
     void Start()
     {
+        electron.AssignGameObjects();
         if (gameObject.name.Length >= 10)
             currentPositron = gameObject.name[10] - '0';
         else
             currentPositron = 0;
-        electron.AssignGameObjects();
         temporaryY = gameObject.transform.position.y;
         antielectronRB = electron.positrons[currentPositron].GetComponent<Rigidbody2D>();
         electronRB = electron.electron.GetComponent<Rigidbody2D>();
@@ -50,10 +50,10 @@ public class Tracker : MonoBehaviour
     {
         electron.PositronFalling(currentPositron, temporaryY);
 
-        if (electronRB == null || orbitScript.electronInOrbit)
+        if (electron.electron == null || orbitScript.electronInOrbit)
             antielectronRB.velocity = Vector2.zero;
 
-        else if (electron.electron != null && !repulsion && Time.time >= 2f)
+        else if (electron.electron != null && !repulsion)
         {
             Vector2 direction = electronRB.position - antielectronRB.position;
 

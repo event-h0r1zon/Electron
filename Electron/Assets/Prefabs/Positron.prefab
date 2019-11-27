@@ -183,10 +183,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   proton: {fileID: 0}
   electron:
-    electronG: {fileID: 0}
-    antielectronG: {fileID: 6223999036129954954}
-    electronIsFalling: 0
-    antielectronIsFalling: 0
+    electron: {fileID: 0}
+    positrons: []
   repulse:
     pushForce: 2
 --- !u!1 &6223999037219086813

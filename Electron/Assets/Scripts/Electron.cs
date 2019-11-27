@@ -12,7 +12,15 @@ public class Electron
     public void AssignGameObjects()
     {
         electron = GameObject.FindGameObjectWithTag("Player");
-        positrons = GameObject.FindGameObjectsWithTag("Positron");
+        int arraySize = GameObject.FindGameObjectsWithTag("Positron").Length;
+        positrons = new GameObject[arraySize];
+        foreach (GameObject positron in GameObject.FindGameObjectsWithTag("Positron"))
+        {
+            if (positron.name.Length >= 10)
+                positrons[positron.name[10] - '0'] = positron;
+            else
+                positrons[0] = positron;
+        }
     }
 
     public bool ElectronFalling()
