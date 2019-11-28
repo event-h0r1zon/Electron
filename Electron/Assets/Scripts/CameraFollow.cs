@@ -3,16 +3,23 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour{
     public Transform playerTarget;
-    public Vector2 offset;
+    public Transform protonPosition;
+    public Vector2 electronThreashold;
+    public Vector2 protonThreashold;
+    private bool move = false;
 
-    void Start(){
-        offset = transform.position - playerTarget.position;
-    }
     void LateUpdate(){
-        if(playerTarget == null)
+        if(playerTarget == null || protonPosition == null)
             return;
-        else{
-            transform.position = new Vector3(playerTarget.position.x + offset.x, transform.position.y, -10);
+        else
+        {
+            if (protonPosition.position.x - transform.position.x <= protonThreashold.x)
+                move = false;
+            else
+                move = true;
+
+            if (transform.position.x - playerTarget.position.x <= electronThreashold.x && move)
+                transform.position = new Vector3(playerTarget.position.x + electronThreashold.x, transform.position.y, -10);
         }
     }
 }

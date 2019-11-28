@@ -9,8 +9,6 @@ public class PlayerMovement : MonoBehaviour
 {
 
     //Public variables
-    public float rotation1;
-    public float rotation2;
     public float pushForce;
     [HideInInspector]
     public bool jumped = false;
@@ -23,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
     //Private variables
     private float temporaryJumpTime = 0f;
+    private float rotationAngle1;
+    private float rotationAngle2;
     private float temporarySuperPositionTime = 0f;
     private bool inSuperposition = false;
 
@@ -52,8 +52,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (superpositionerScripts[i].setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
             {
+                if (superpositionerScripts[i].direction1 != null || superpositionerScripts[i].direction2 != null)
+                {
+                    rotationAngle1 = -superpositionerScripts[i].direction1.eulerAngles.z;
+                    rotationAngle2 = -superpositionerScripts[i].direction2.eulerAngles.z;
+                }
                 inSuperposition = true;
-                StartCoroutine(setSuperPosition(i));
+                StartCoroutine(setSuperPosition(i, rotationAngle1, rotationAngle2));
             }
         }
         if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !inSuperposition)
@@ -86,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
 
     //Coroutines
 
-    IEnumerator setSuperPosition(int currentSuperpositioner)
+    IEnumerator setSuperPosition(int currentSuperpositioner, float rotation1, float rotation2)
     {
         float randomRotation = Random.Range(rotation1, rotation2);
         float x = Mathf.Sin(randomRotation * Mathf.Deg2Rad) * pushForce;
