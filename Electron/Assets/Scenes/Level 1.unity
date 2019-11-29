@@ -1148,12 +1148,12 @@ PrefabInstance:
     - target: {fileID: 8691871060501087191, guid: 4b44e0681fbec1341b64b7585c38b617,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -28.5
+      value: -32.6
       objectReference: {fileID: 0}
     - target: {fileID: 8691871060501087191, guid: 4b44e0681fbec1341b64b7585c38b617,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.799999
+      value: 20.1
       objectReference: {fileID: 0}
     - target: {fileID: 8691871060501087191, guid: 4b44e0681fbec1341b64b7585c38b617,
         type: 3}
@@ -1461,7 +1461,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 35
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1506,7 +1506,7 @@ MonoBehaviour:
   playerTarget: {fileID: 1898155418}
   protonPosition: {fileID: 251227582}
   electronThreashold: {x: 40, y: 0}
-  protonThreashold: {x: 60, y: 0}
+  protonThreashold: {x: 50, y: 0}
 --- !u!114 &756321344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1546,7 +1546,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 210, y: 90}
+  m_Size: {x: 150, y: 80}
   m_EdgeRadius: 0
 --- !u!1 &757534918
 GameObject:
