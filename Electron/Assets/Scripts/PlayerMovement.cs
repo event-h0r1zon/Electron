@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     //Public monobehaviors
     public GameObject proton;
+    public ParticleSystem jumpingParticle;
     public GameObject[] superpositioners;
     public List<Superpositioner> superpositionerScripts;
 
@@ -82,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
     private void JumpMechanic(Vector2 jumpForce, Vector2 touchPosition)
     {
         jumped = true;
+        ParticleSystem.Instantiate(jumpingParticle, transform.position, Quaternion.identity);
         if (Screen.width / 2 < touchPosition.x)
             rb.velocity = jumpForce;
         else

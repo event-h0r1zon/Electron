@@ -7,6 +7,8 @@ public class EnergyManager : MonoBehaviour
 {
     public Slider slider;
     public GameObject Pause;
+    public ParticleSystem energyParticle;
+    public ParticleSystem superpositionParticle;
     private PauseMenu pauseScript;
     public float energyBonus;
     public float energyDecreaseDuration;
@@ -60,12 +62,20 @@ public class EnergyManager : MonoBehaviour
             for (int i = 0; i < quantumEnergys.Length; i++)
             {
                 if (energyAdders[i].booster)
+                {
+                    if (quantumEnergys[i] != null)
+                        ParticleSystem.Instantiate(energyParticle, quantumEnergys[i].transform.position, Quaternion.identity);
                     StartCoroutine(AddEnergy(i));
+                }
             }
             for (int i = 0; i < superpositions.Length; i++)
             {
                 if (superpositioners[i].setVelocity)
+                {
+                    if (superpositions[i] != null)
+                        ParticleSystem.Instantiate(superpositionParticle, superpositions[i].transform.position, Quaternion.identity);
                     StartCoroutine(SuperpositionEnergy(i));
+                }
             }
 
             if (electronProperties.jumped)

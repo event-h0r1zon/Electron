@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class AntiProton : MonoBehaviour
 {
     private bool enteredZone = false;
+    public ParticleSystem electronPushed;
     [HideInInspector]
     public bool lowerEnergy = false;
     public GameObject Pause;
@@ -54,6 +55,7 @@ public class AntiProton : MonoBehaviour
 
         if (electronRB != null && enteredZone)
         {
+            ParticleSystem.Instantiate(electronPushed, electron.electron.transform.position, Quaternion.identity);
             electronRB.velocity = repulse.PushBackVelocity(electronRB.position, transform.position);
             enteredZone = false;
         }

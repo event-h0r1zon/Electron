@@ -5,6 +5,7 @@ using UnityEngine;
 public class Tracker : MonoBehaviour
 {
     public GameObject proton;
+    public ParticleSystem collisionParticle;
     private ProtonOrbit orbitScript;
     public Electron electron;
     private float speed = 20f;
@@ -68,6 +69,7 @@ public class Tracker : MonoBehaviour
 
         if (destroy)
         {
+            ParticleSystem.Instantiate(collisionParticle, transform.position, Quaternion.identity);
             Destroy(electron.positrons[currentPositron]);
             Destroy(electron.electron);
         }
