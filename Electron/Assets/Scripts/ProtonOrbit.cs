@@ -8,6 +8,8 @@ public class ProtonOrbit : MonoBehaviour
     public Electron electron;
     [HideInInspector]
     public Orbit orbit;
+    public GameObject Pause;
+    private PauseMenu pauseScript;
     private Collider2D col2D;
     private float radius;
     [HideInInspector]
@@ -26,6 +28,8 @@ public class ProtonOrbit : MonoBehaviour
 
     void Start()
     {
+        Pause = GameObject.Find("UI Manager");
+        pauseScript = Pause.GetComponent<PauseMenu>();
         electron.AssignGameObjects();
         col2D = GetComponent<Collider2D>();
     }
@@ -33,7 +37,7 @@ public class ProtonOrbit : MonoBehaviour
     void Update()
     {
         electronFalling = electron.ElectronFalling();
-        if(electron.electron != null)
+        if(electron.electron != null && !pauseScript.slowingDown)
             orbit.ExecuteOrbit(electron.electron.transform, transform, radius);
         else
             return;

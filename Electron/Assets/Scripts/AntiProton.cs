@@ -8,6 +8,8 @@ public class AntiProton : MonoBehaviour
     private bool enteredZone = false;
     [HideInInspector]
     public bool lowerEnergy = false;
+    public GameObject Pause;
+    private PauseMenu pauseScript;
     public Electron electron;
     private string enteringPositron;
     private int currentPositron;
@@ -21,9 +23,11 @@ public class AntiProton : MonoBehaviour
 
     private void Start()
     {
+        Pause = GameObject.Find("UI Manager");
         electron.AssignGameObjects();
         positronTmpY = electron.positrons[currentPositron].transform.position.y;
         electronRB = electron.electron.GetComponent<Rigidbody2D>();
+        pauseScript = Pause.GetComponent<PauseMenu>();
         col2D = GetComponent<Collider2D>();
     }
 
@@ -59,7 +63,7 @@ public class AntiProton : MonoBehaviour
 
     void Update()
     {
-        if(GameObject.Find(enteringPositron) != null)
+        if(GameObject.Find(enteringPositron) != null && !pauseScript.slowingDown)
             orbit.ExecuteOrbit(GameObject.Find(enteringPositron).transform, transform, radius);
     }
 

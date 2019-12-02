@@ -12,21 +12,13 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
-        Time.timeScale += (1f / slowdownLength) * Time.unscaledDeltaTime;
-        Time.timeScale = Mathf.Clamp(Time.timeScale, 0f, 1f);
-
         if (panel.activeSelf == true)
         {
             slowingDown = true;
-            SlowMotion();
+            Time.timeScale = 0f;
+            Time.fixedDeltaTime = 0f;
         }
         else if (panel.activeSelf == false)
             slowingDown = false;
-    }
-
-    public void SlowMotion()
-    {
-        Time.timeScale = slowdownFactor;
-        Time.fixedDeltaTime = Time.timeScale * .02f;
     }
 }
