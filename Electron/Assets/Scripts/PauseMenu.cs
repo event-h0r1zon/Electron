@@ -14,11 +14,13 @@ public class PauseMenu : MonoBehaviour
     {
         if (panel.activeSelf == true)
         {
-            slowingDown = true;
             Time.timeScale = 0f;
-            Time.fixedDeltaTime = 0f;
+            slowingDown = true;
         }
         else if (panel.activeSelf == false)
+        {
+            Time.timeScale = 1f;
             slowingDown = false;
+        }
     }
 }

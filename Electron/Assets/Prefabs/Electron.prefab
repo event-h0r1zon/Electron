@@ -133,17 +133,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0868ad0ab0454524e905cce892a7f5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation1: 10
-  rotation2: 40
   pushForce: 80
   jumped: 0
   superpositionDuration: 0.3
-  jumpForce: {x: 25, y: 20}
+  jumpForce: {x: 30, y: 22}
   slowdownFactor: 2.5
   jumpDelay: 0.35
   superpositionDelay: 0.05
   startDelay: 2
   proton: {fileID: 0}
+  jumpingParticle: {fileID: 19800000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
   superpositioners: []
   superpositionerScripts: []
 --- !u!1 &4903485577742391954
@@ -215,7 +214,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 2
   m_Time: 1
   m_Parameters:
     serializedVersion: 3

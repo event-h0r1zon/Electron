@@ -16,8 +16,10 @@ public class ProtonOrbit : MonoBehaviour
     public bool electronInOrbit = false;
     private bool electronFalling;
 
-    void OnTriggerEnter2D(Collider2D other){
-        if(other.tag == "Player"){
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
             electronInOrbit = true;
             Vector2 radiusVector = electron.electron.transform.position - gameObject.GetComponentInParent<Transform>().position;
             radius = radiusVector.magnitude;
@@ -37,8 +39,11 @@ public class ProtonOrbit : MonoBehaviour
     void Update()
     {
         electronFalling = electron.ElectronFalling();
-        if(electron.electron != null && !pauseScript.slowingDown)
+        if (electron.electron != null && !pauseScript.slowingDown && electronInOrbit)
+        {
+            electron.electron.GetComponent<Rigidbody2D>().gravityScale = 0f;
             orbit.ExecuteOrbit(electron.electron.transform, transform, radius);
+        }
         else
             return;
     }

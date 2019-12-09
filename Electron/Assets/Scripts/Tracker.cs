@@ -13,10 +13,16 @@ public class Tracker : MonoBehaviour
     private float rotateSpeed = 400f;
     private Rigidbody2D antielectronRB;
     private Rigidbody2D electronRB;
+    private float pushForce = 80;
+    public float superpositionDelay = 0.1f;
+    private float rotationAngle1;
+    private float rotationAngle2;
     private float temporaryY;
     private int currentPositron;
     private bool repulsion = false;
     private bool destroy = false;
+    private bool positronSuperposition = false;
+    private GameObject superpositioner;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -24,6 +30,11 @@ public class Tracker : MonoBehaviour
             destroy = true;
         else if (other.name == "Proton Sprite")
             StartCoroutine(PushBack());
+        else if (other.tag == "Superpositioner")
+        {
+            superpositioner = other.gameObject;
+            positronSuperposition = true;
+        }
     }
 
     void Start()
@@ -54,7 +65,7 @@ public class Tracker : MonoBehaviour
         if (electron.electron == null || orbitScript.electronInOrbit)
             antielectronRB.velocity = Vector2.zero;
 
-        else if (electron.electron != null && !repulsion)
+        else if (electron.electron != null && !repulsion && !positronSuperposition)
         {
             Vector2 direction = electronRB.position - antielectronRB.position;
 
@@ -67,11 +78,42 @@ public class Tracker : MonoBehaviour
             antielectronRB.velocity = transform.up * speed;
         }
 
+        if (positronSuperposition)
+        {
+            if (superpositioner != null)
+            {
+                if (superpositioner.GetComponent<Superpositioner>().direction1 != null || superpositioner.GetComponent<Superpositioner>().direction2 != null)
+                {
+                    rotationAngle1 = -superpositioner.GetComponent<Superpositioner>().direction1.eulerAngles.z;
+                    rotationAngle2 = -superpositioner.GetComponent<Superpositioner>().direction2.eulerAngles.z;
+                }
+            }
+            StartCoroutine(setSuperPosition(superpositioner, rotationAngle1, rotationAngle2));
+        }
+
         if (destroy)
         {
             ParticleSystem.Instantiate(collisionParticle, transform.position, Quaternion.identity);
-            Destroy(electron.positrons[currentPositron]);
+            Destroy(gameObject);
             Destroy(electron.electron);
         }
+    }
+
+    IEnumerator setSuperPosition(GameObject superpositioner, float rotation1, float rotation2)
+    {
+        float randomRotation = Random.Range(rotation1, rotation2);
+        float x = Mathf.Sin(randomRotation * Mathf.Deg2Rad) * pushForce;
+        float y = Mathf.Cos(randomRotation * Mathf.Deg2Rad) * pushForce;
+
+        Vector2 velocity = new Vector2(x, y);
+
+        antielectronRB.velocity = velocity;
+
+        Destroy(superpositioner);
+
+        yield return new WaitForSeconds(0.5f);
+
+        antielectronRB.velocity = velocity / 1.5f;
+        positronSuperposition = false;
     }
 }

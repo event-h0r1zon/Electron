@@ -29,7 +29,7 @@ public class Orbit
             }
             else{
                 SetElectronPosition(electronPos, protonPos, radius);
-                orbitProgression = (progressDirector) ? orbitProgression + 0.005f : orbitProgression - 0.005f;
+                orbitProgression = (progressDirector) ? orbitProgression + 0.008f : orbitProgression - 0.008f;
                 if(orbitProgression >= 1f)
                     orbitProgression = 0f;
             }
