@@ -184,6 +184,8 @@ MonoBehaviour:
   proton: {fileID: 0}
   collisionParticle: {fileID: 198247871303120836, guid: e473029e4c70ad543a6879b82a732f4f,
     type: 3}
+  superpositionParticle: {fileID: 6374759643495811097, guid: 7361c66682ea6474b87b6faa3d5d815c,
+    type: 3}
   electron:
     electron: {fileID: 0}
     positrons: []

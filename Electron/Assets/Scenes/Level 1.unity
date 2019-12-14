@@ -226,7 +226,7 @@ MonoBehaviour:
   Pause: {fileID: 354023095}
   energyParticle: {fileID: 198755127273645396, guid: e243632bb3aff9549abdcfcc2ef0c4f0,
     type: 3}
-  superpositionParticle: {fileID: 19800000, guid: f2dba9e16cd347f44a395b8204544ee5,
+  superpositionParticle: {fileID: 19800002, guid: db50ab1c866680e4bb870bf5eb72dd3d,
     type: 3}
   energyBonus: 0.03
   energyDecreaseDuration: 0.1

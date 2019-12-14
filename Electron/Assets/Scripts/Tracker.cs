@@ -6,11 +6,12 @@ public class Tracker : MonoBehaviour
 {
     public GameObject proton;
     public ParticleSystem collisionParticle;
+    public ParticleSystem superpositionParticle;
     private ProtonOrbit orbitScript;
     public Electron electron;
-    private float speed = 20f;
+    private float speed = 18f;
     public Repulse repulse;
-    private float rotateSpeed = 400f;
+    private float rotateSpeed = 200f;
     private Rigidbody2D antielectronRB;
     private Rigidbody2D electronRB;
     private float pushForce = 80;
@@ -33,6 +34,7 @@ public class Tracker : MonoBehaviour
         else if (other.tag == "Superpositioner")
         {
             superpositioner = other.gameObject;
+            ParticleSystem.Instantiate(superpositionParticle, superpositioner.transform.position, Quaternion.identity);
             positronSuperposition = true;
         }
     }
@@ -63,7 +65,10 @@ public class Tracker : MonoBehaviour
         electron.PositronFalling(currentPositron, temporaryY);
 
         if (electron.electron == null || orbitScript.electronInOrbit)
+        {
+            antielectronRB.gravityScale = 0f;
             antielectronRB.velocity = Vector2.zero;
+        }
 
         else if (electron.electron != null && !repulsion && !positronSuperposition)
         {
