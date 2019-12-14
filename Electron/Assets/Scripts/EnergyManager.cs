@@ -51,9 +51,6 @@ public class EnergyManager : MonoBehaviour
 
             electronFalling = electron.ElectronFalling();
 
-            if(slider.value > 0f)
-
-
             for (int i = 0; i < antiprotons.Length; i++)
             {
                 if (antiprotonScripts[i].lowerEnergy)

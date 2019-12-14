@@ -35,6 +35,14 @@ public class Tracker : MonoBehaviour
         {
             superpositioner = other.gameObject;
             ParticleSystem.Instantiate(superpositionParticle, superpositioner.transform.position, Quaternion.identity);
+            if (superpositioner != null)
+            {
+                if (superpositioner.GetComponent<Superpositioner>().direction1 != null || superpositioner.GetComponent<Superpositioner>().direction2 != null)
+                {
+                    rotationAngle1 = -superpositioner.GetComponent<Superpositioner>().direction1.eulerAngles.z;
+                    rotationAngle2 = -superpositioner.GetComponent<Superpositioner>().direction2.eulerAngles.z;
+                }
+            }
             positronSuperposition = true;
         }
     }
@@ -54,9 +62,10 @@ public class Tracker : MonoBehaviour
 
     IEnumerator PushBack()
     {
+        positronSuperposition = false;
         antielectronRB.velocity = repulse.PushBackVelocity(antielectronRB.position, proton.transform.position);
         repulsion = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
         repulsion = false;
     }
 
@@ -84,17 +93,7 @@ public class Tracker : MonoBehaviour
         }
 
         if (positronSuperposition)
-        {
-            if (superpositioner != null)
-            {
-                if (superpositioner.GetComponent<Superpositioner>().direction1 != null || superpositioner.GetComponent<Superpositioner>().direction2 != null)
-                {
-                    rotationAngle1 = -superpositioner.GetComponent<Superpositioner>().direction1.eulerAngles.z;
-                    rotationAngle2 = -superpositioner.GetComponent<Superpositioner>().direction2.eulerAngles.z;
-                }
-            }
             StartCoroutine(setSuperPosition(superpositioner, rotationAngle1, rotationAngle2));
-        }
 
         if (destroy)
         {
@@ -117,8 +116,6 @@ public class Tracker : MonoBehaviour
         Destroy(superpositioner);
 
         yield return new WaitForSeconds(0.5f);
-
-        antielectronRB.velocity = velocity / 1.5f;
         positronSuperposition = false;
     }
 }
