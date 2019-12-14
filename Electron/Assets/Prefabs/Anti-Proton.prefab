@@ -303,12 +303,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cbc3982c98c2e94cb7805bc96c01562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  electronPushed: {fileID: 198157547220164012, guid: 4961a16ba01e09547be3e1c9d16d5ad0,
+    type: 3}
   lowerEnergy: 0
+  Pause: {fileID: 0}
   electron:
-    electronG: {fileID: 0}
-    antielectronG: {fileID: 0}
-    electronIsFalling: 0
-    antielectronIsFalling: 0
+    electron: {fileID: 0}
+    positrons: []
   orbit:
     enteredOrbit: 0
   repulse:

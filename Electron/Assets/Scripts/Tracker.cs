@@ -18,12 +18,15 @@ public class Tracker : MonoBehaviour
     public float superpositionDelay = 0.1f;
     private float rotationAngle1;
     private float rotationAngle2;
+    public bool countdown;
     private float temporaryY;
     private int currentPositron;
     private bool repulsion = false;
     private bool destroy = false;
     private bool positronSuperposition = false;
     private GameObject superpositioner;
+    private bool positronCollision = false;
+    private bool positronInOrbit = false;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -45,6 +48,13 @@ public class Tracker : MonoBehaviour
             }
             positronSuperposition = true;
         }
+        else if (other.tag == "Positron")
+        {
+            float push = 10f;
+            StartCoroutine(PushOther(other.gameObject.GetComponent<Rigidbody2D>(), push));
+        }
+        else
+            positronInOrbit = true;
     }
 
     void Start()
@@ -60,6 +70,21 @@ public class Tracker : MonoBehaviour
         orbitScript = proton.GetComponentInChildren<ProtonOrbit>();
     }
 
+    IEnumerator PushOther(Rigidbody2D positronRB, float pushForce)
+    {
+        positronCollision = true;
+        Vector2 difference = positronRB.position - antielectronRB.position;
+        if (positronInOrbit)
+            positronRB.velocity = difference * pushForce;
+        else
+        {
+            positronRB.velocity = -difference * pushForce;
+            antielectronRB.velocity = difference * pushForce;
+        }
+        yield return new WaitForSeconds(0.7f);
+        positronCollision = false;
+    }
+
     IEnumerator PushBack()
     {
         positronSuperposition = false;
@@ -71,35 +96,44 @@ public class Tracker : MonoBehaviour
 
     private void Update()
     {
-        electron.PositronFalling(currentPositron, temporaryY);
-
-        if (electron.electron == null || orbitScript.electronInOrbit)
+        if (countdown)
         {
             antielectronRB.gravityScale = 0f;
             antielectronRB.velocity = Vector2.zero;
         }
-
-        else if (electron.electron != null && !repulsion && !positronSuperposition)
+        else
         {
-            Vector2 direction = electronRB.position - antielectronRB.position;
+            antielectronRB.gravityScale = 5f;
+            electron.PositronFalling(currentPositron, temporaryY);
 
-            direction.Normalize();
+            if (electron.electron == null || orbitScript.electronInOrbit && !positronCollision)
+            {
+                antielectronRB.gravityScale = 0f;
+                antielectronRB.velocity = Vector2.zero;
+            }
 
-            float rotateAmount = Vector3.Cross(direction, transform.up).z;
+            else if (electron.electron != null && !repulsion && !positronSuperposition && !positronCollision)
+            {
+                Vector2 direction = electronRB.position - antielectronRB.position;
 
-            antielectronRB.angularVelocity = -rotateAmount * rotateSpeed;
+                direction.Normalize();
 
-            antielectronRB.velocity = transform.up * speed;
-        }
+                float rotateAmount = Vector3.Cross(direction, transform.up).z;
 
-        if (positronSuperposition)
-            StartCoroutine(setSuperPosition(superpositioner, rotationAngle1, rotationAngle2));
+                antielectronRB.angularVelocity = -rotateAmount * rotateSpeed;
 
-        if (destroy)
-        {
-            ParticleSystem.Instantiate(collisionParticle, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-            Destroy(electron.electron);
+                antielectronRB.velocity = transform.up * speed;
+            }
+
+            if (positronSuperposition)
+                StartCoroutine(setSuperPosition(superpositioner, rotationAngle1, rotationAngle2));
+
+            if (destroy)
+            {
+                ParticleSystem.Instantiate(collisionParticle, transform.position, Quaternion.identity);
+                Destroy(gameObject);
+                Destroy(electron.electron);
+            }
         }
     }
 

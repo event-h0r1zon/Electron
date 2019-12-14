@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpDelay = 0.35f;
     public float superpositionDelay = 0.1f;
     public float startDelay = 3f;
+    public bool countdown;
 
     //Private variables
     private float temporaryJumpTime = 0f;
@@ -49,21 +50,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        for (int i = 0; i < superpositioners.Length; i++)
+        if (countdown)
         {
-            if (superpositionerScripts[i].setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
-            {
-                if (superpositionerScripts[i].direction1 != null || superpositionerScripts[i].direction2 != null)
-                {
-                    rotationAngle1 = -superpositionerScripts[i].direction1.eulerAngles.z;
-                    rotationAngle2 = -superpositionerScripts[i].direction2.eulerAngles.z;
-                }
-                inSuperposition = true;
-                StartCoroutine(setSuperPosition(i, rotationAngle1, rotationAngle2));
-            }
+            rb.gravityScale = 0f;
+            rb.velocity = Vector2.zero;
         }
-        if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !inSuperposition)
-            touchSetter(jumpForce);
+        else
+        {
+            rb.gravityScale = 5f;
+            for (int i = 0; i < superpositioners.Length; i++)
+            {
+                if (superpositionerScripts[i].setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
+                {
+                    if (superpositionerScripts[i].direction1 != null || superpositionerScripts[i].direction2 != null)
+                    {
+                        rotationAngle1 = -superpositionerScripts[i].direction1.eulerAngles.z;
+                        rotationAngle2 = -superpositionerScripts[i].direction2.eulerAngles.z;
+                    }
+                    inSuperposition = true;
+                    StartCoroutine(setSuperPosition(i, rotationAngle1, rotationAngle2));
+                }
+            }
+            if (Input.touchCount > 0 && Time.time - temporaryJumpTime >= jumpDelay && !protonOrbit.electronInOrbit && !inSuperposition)
+                touchSetter(jumpForce);
+        }
     }
     private void touchSetter(Vector2 jumpForce)
     {

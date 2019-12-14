@@ -39,7 +39,7 @@ public class AntiProton : MonoBehaviour
             enteredZone = true;
             lowerEnergy = true;
         }
-        else
+        else if(other.tag == "Positron")
         {
             enteringPositron = other.name;
             if (other.name.Length >= 10)

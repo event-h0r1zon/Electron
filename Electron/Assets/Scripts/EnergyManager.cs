@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class EnergyManager : MonoBehaviour
 {
     public Slider slider;
     public GameObject Pause;
+    private float currentTime = 0;
     public ParticleSystem energyParticle;
     public ParticleSystem superpositionParticle;
     private PauseMenu pauseScript;
@@ -25,10 +26,14 @@ public class EnergyManager : MonoBehaviour
     public List<EnergyAdder> energyAdders;
     public float jumpEnergy = 0.15f;
     public float fallingBonus = 0.1f;
+    public GameObject countdownText;
+    private TextMeshProUGUI textUI;
 
     private void Awake()
     {
+        currentTime = 3;
         electron.AssignGameObjects();
+        textUI = countdownText.GetComponent<TextMeshProUGUI>();
         electronProperties = electron.electron.GetComponent<PlayerMovement>();
         slider.value = 1f;
         pauseScript = Pause.GetComponent<PauseMenu>();
@@ -47,50 +52,82 @@ public class EnergyManager : MonoBehaviour
 
     private void Update()
     {
-        if (electron.electron != null && !pauseScript.slowingDown) {
-
-            electronFalling = electron.ElectronFalling();
-
-            for (int i = 0; i < antiprotons.Length; i++)
+        if (currentTime > 0)
+        {
+            countdownText.SetActive(true);
+            currentTime -= 1 * Time.deltaTime;
+            textUI.text = currentTime.ToString("0");
+            if (electron.electron != null)
+                electron.electron.GetComponent<PlayerMovement>().countdown = true;
+            for (int i = 0; i < electron.positrons.Length; i++)
             {
-                if (antiprotonScripts[i].lowerEnergy)
-                    StartCoroutine(LowerEnergy(i));
+                if (electron.positrons[i] != null)
+                    electron.positrons[i].GetComponent<Tracker>().countdown = true;
             }
-            for (int i = 0; i < quantumEnergys.Length; i++)
-            {
-                if (energyAdders[i].booster)
-                {
-                    if (quantumEnergys[i] != null)
-                        ParticleSystem.Instantiate(energyParticle, quantumEnergys[i].transform.position, Quaternion.identity);
-                    StartCoroutine(AddEnergy(i));
-                }
-            }
-            for (int i = 0; i < superpositions.Length; i++)
-            {
-                if (superpositioners[i].setVelocity)
-                {
-                    if (superpositions[i] != null)
-                        ParticleSystem.Instantiate(superpositionParticle, superpositions[i].transform.position, Quaternion.identity);
-                    StartCoroutine(SuperpositionEnergy(i));
-                }
-            }
-
-            if (electronProperties.jumped)
-                StartCoroutine(JumpDecrease());
-
-            if (electronFalling)
-                slider.value += fallingBonus / 10f;
-
-            if (protonScript.electronInOrbit)
-                slider.value += fallingBonus / 10f;
-
-            if (slider.value <= 0f)
-                Destroy(electron.electron);
-
         }
+        else
+        {
+            countdownText.SetActive(false);
+            if (electron.electron != null)
+                electron.electron.GetComponent<PlayerMovement>().countdown = false;
+            for (int i = 0; i < electron.positrons.Length; i++)
+            {
+                if (electron.positrons[i] != null)
+                    electron.positrons[i].GetComponent<Tracker>().countdown = false;
+            }
+            if (electron.electron != null)
+                electron.electron.GetComponent<Rigidbody2D>().gravityScale = 5;
+            for (int i = 0; i < electron.positrons.Length; i++)
+            {
+                if (electron.positrons[i] != null)
+                    electron.positrons[i].GetComponent<Rigidbody2D>().gravityScale = 5;
+            }
+            if (electron.electron != null && !pauseScript.slowingDown)
+            {
 
-        else if (electron.electron == null)
-            slider.value -= fallingBonus / 10f;
+                electronFalling = electron.ElectronFalling();
+
+                for (int i = 0; i < antiprotons.Length; i++)
+                {
+                    if (antiprotonScripts[i].lowerEnergy)
+                        StartCoroutine(LowerEnergy(i));
+                }
+                for (int i = 0; i < quantumEnergys.Length; i++)
+                {
+                    if (energyAdders[i].booster)
+                    {
+                        if (quantumEnergys[i] != null)
+                            ParticleSystem.Instantiate(energyParticle, quantumEnergys[i].transform.position, Quaternion.identity);
+                        StartCoroutine(AddEnergy(i));
+                    }
+                }
+                for (int i = 0; i < superpositions.Length; i++)
+                {
+                    if (superpositioners[i].setVelocity)
+                    {
+                        if (superpositions[i] != null)
+                            ParticleSystem.Instantiate(superpositionParticle, superpositions[i].transform.position, Quaternion.identity);
+                        StartCoroutine(SuperpositionEnergy(i));
+                    }
+                }
+
+                if (electronProperties.jumped)
+                    StartCoroutine(JumpDecrease());
+
+                if (electronFalling)
+                    slider.value += fallingBonus / 10f;
+
+                if (protonScript.electronInOrbit)
+                    slider.value += fallingBonus / 10f;
+
+                if (slider.value <= 0f)
+                    Destroy(electron.electron);
+
+            }
+
+            else if (electron.electron == null)
+                slider.value -= fallingBonus / 10f;
+        }
     }
 
     IEnumerator JumpDecrease()
