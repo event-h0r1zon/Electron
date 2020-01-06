@@ -40,10 +40,7 @@ public class ProtonOrbit : MonoBehaviour
     {
         electronFalling = electron.ElectronFalling();
         if (electron.electron != null && !pauseScript.slowingDown && electronInOrbit)
-        {
-            electron.electron.GetComponent<Rigidbody2D>().gravityScale = 0f;
             orbit.ExecuteOrbit(electron.electron.transform, transform, radius);
-        }
         else
             return;
     }

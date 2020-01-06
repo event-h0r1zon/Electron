@@ -35,7 +35,7 @@ public class EnergyManager : MonoBehaviour
         electron.AssignGameObjects();
         textUI = countdownText.GetComponent<TextMeshProUGUI>();
         electronProperties = electron.electron.GetComponent<PlayerMovement>();
-        slider.value = 1f;
+        slider.value = slider.maxValue;
         pauseScript = Pause.GetComponent<PauseMenu>();
         proton = GameObject.FindGameObjectWithTag("Proton");
         antiprotons = GameObject.FindGameObjectsWithTag("Antiproton");
@@ -139,7 +139,7 @@ public class EnergyManager : MonoBehaviour
 
     IEnumerator LowerEnergy(int currentScript)
     {
-        slider.value -= 0.08f;
+        slider.value -= 0.04f;
         yield return new WaitForSeconds(energyDecreaseDuration);
         antiprotonScripts[currentScript].lowerEnergy = false;
     }
