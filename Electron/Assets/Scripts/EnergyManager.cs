@@ -75,13 +75,7 @@ public class EnergyManager : MonoBehaviour
                 if (electron.positrons[i] != null)
                     electron.positrons[i].GetComponent<Tracker>().countdown = false;
             }
-            if (electron.electron != null)
-                electron.electron.GetComponent<Rigidbody2D>().gravityScale = 5;
-            for (int i = 0; i < electron.positrons.Length; i++)
-            {
-                if (electron.positrons[i] != null)
-                    electron.positrons[i].GetComponent<Rigidbody2D>().gravityScale = 5;
-            }
+
             if (electron.electron != null && !pauseScript.slowingDown)
             {
 

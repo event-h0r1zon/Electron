@@ -105,11 +105,11 @@ public class Tracker : MonoBehaviour
         {
             antielectronRB.gravityScale = 5f;
             electron.PositronFalling(currentPositron, temporaryY);
-
-            if (electron.electron == null || orbitScript.electronInOrbit && !positronCollision)
+            if ((electron.electron == null || orbitScript.electronInOrbit) && !positronCollision)
             {
                 antielectronRB.gravityScale = 0f;
                 antielectronRB.velocity = Vector2.zero;
+                antielectronRB.angularVelocity = 0;
             }
 
             else if (electron.electron != null && !repulsion && !positronSuperposition && !positronCollision)
