@@ -9,7 +9,7 @@ public class OrbitRenderer : MonoBehaviour
     [Range(3, 200)]
     public int segments;
     public Orbit orbit;
-    public float radius;
+    private float radius = (float)12.5;
 
     void Awake(){
         lineRenderer = GetComponent<LineRenderer>();

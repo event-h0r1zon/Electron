@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class LevelSelector : MonoBehaviour
 {
     public GameObject levelHolder;
     public GameObject levelIcon;
     public GameObject thisCanvas;
+    private List<GameObject> levelButtons = new List<GameObject>();
     public int numberOfLevels = 50;
     public Vector2 iconSpacing;
     private Rect panelDimensions;
@@ -26,6 +28,21 @@ public class LevelSelector : MonoBehaviour
         amountPerPage = maxInARow * maxInACol;
         int totalPages = Mathf.CeilToInt((float)numberOfLevels / amountPerPage);
         LoadPanels(totalPages);
+    }
+    private void Update()
+    {
+        foreach (GameObject levelButton in levelButtons)
+        {
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+                Vector2 tpos = touch.position;
+                RectTransform rt = levelButton.GetComponent<Button>().GetComponent<RectTransform>();
+                bool pressedButton = RectTransformUtility.RectangleContainsScreenPoint(rt, tpos);
+                if (pressedButton)
+                    ChangeScene(levelButton.name);
+            }
+        }
     }
     void LoadPanels(int numberOfPanels)
     {
@@ -59,10 +76,15 @@ public class LevelSelector : MonoBehaviour
         {
             currentLevelCount++;
             GameObject icon = Instantiate(levelIcon) as GameObject;
+            levelButtons.Add(icon);
             icon.transform.SetParent(thisCanvas.transform, false);
             icon.transform.SetParent(parentObject.transform);
             icon.name = "Level " + i;
             icon.GetComponentInChildren<TextMeshProUGUI>().SetText("Level " + currentLevelCount);
         }
+    }
+
+    void ChangeScene(string sceneName) {
+        SceneManager.LoadScene(sceneName);
     }
 }

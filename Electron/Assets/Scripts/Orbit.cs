@@ -54,16 +54,12 @@ public class Orbit
         float radius = radiusVector.magnitude;
         float angle = 0;
 
-        //Base Zone
         if(objectEnteringPosition.y >= protonPosition.y && objectEnteringPosition.x >= protonPosition.x)
             angle = (Mathf.Asin(radiusVector.x/radius)) * Mathf.Rad2Deg;
-        // 90 degree zone
         else if(objectEnteringPosition.y > protonPosition.y && objectEnteringPosition.x < protonPosition.x)
             angle = (Mathf.Asin(radiusVector.x/radius)) * Mathf.Rad2Deg;
-        //180 degree zone
         else if(objectEnteringPosition.y < protonPosition.y && objectEnteringPosition.x < protonPosition.x)
             angle = (-Mathf.Acos(radiusVector.y/radius)) * Mathf.Rad2Deg;
-        //270 degree zone
         else if(objectEnteringPosition.y <= protonPosition.y && objectEnteringPosition.x >= protonPosition.x)
             angle = (Mathf.Acos(radiusVector.y/radius)) * Mathf.Rad2Deg;
         
