@@ -29,13 +29,13 @@ public class PlayerMovement : MonoBehaviour
     private bool pressedPause = false;
 
     //Public monobehaviors
-    public GameObject proton;
     public ParticleSystem jumpingParticle;
     public GameObject[] superpositioners;
     public Button pause;
     public List<Superpositioner> superpositionerScripts;
 
     //Private monobehaviors
+    public GameObject proton;
     private ProtonOrbit protonOrbit;
     private Rigidbody2D rb;
 
@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        proton = GameObject.Find("Proton Sprite");
         protonOrbit = proton.GetComponent<ProtonOrbit>();
         superpositioners = GameObject.FindGameObjectsWithTag("Superpositioner");
         for (int i = 0; i < superpositioners.Length; i++)
@@ -96,8 +97,9 @@ public class PlayerMovement : MonoBehaviour
     {
         Touch touch = Input.GetTouch(0);
         Vector2 tpos = touch.position;
-        RectTransform rt = pause.GetComponent<RectTransform>();
-        bool pressedButton = RectTransformUtility.RectangleContainsScreenPoint(rt, tpos);
+        RectTransform pauseRT = pause.GetComponent<RectTransform>();
+        bool pressedButton = RectTransformUtility.RectangleContainsScreenPoint(pauseRT, tpos);
+        
         switch (touch.phase)
         {
             case TouchPhase.Began:
@@ -122,7 +124,6 @@ public class PlayerMovement : MonoBehaviour
             else
                 rb.velocity = new Vector2(-jumpForce.x, jumpForce.y);
             temporaryJumpTime = Time.time;
-
         }
     }
 

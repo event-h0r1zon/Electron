@@ -26,7 +26,8 @@ public class AntiProton : MonoBehaviour
     {
         Pause = GameObject.Find("UI Manager");
         electron.AssignGameObjects();
-        positronTmpY = electron.positrons[currentPositron].transform.position.y;
+        if(electron.positrons.Length > 0)
+            positronTmpY = electron.positrons[currentPositron].transform.position.y;
         electronRB = electron.electron.GetComponent<Rigidbody2D>();
         pauseScript = Pause.GetComponent<PauseMenu>();
         col2D = GetComponent<Collider2D>();

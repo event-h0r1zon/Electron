@@ -15,6 +15,7 @@ public class ProtonOrbit : MonoBehaviour
     [HideInInspector]
     public bool electronInOrbit = false;
     private bool electronFalling;
+    public GameObject winPanel;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -24,6 +25,7 @@ public class ProtonOrbit : MonoBehaviour
             Vector2 radiusVector = electron.electron.transform.position - gameObject.GetComponentInParent<Transform>().position;
             radius = radiusVector.magnitude;
             orbit.EnterCollider(electron.electron.transform, gameObject.GetComponentInParent<Transform>(), electronFalling);
+            winPanel.SetActive(true);
             Destroy(col2D);
         }
     }

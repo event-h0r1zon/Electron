@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,6 +11,20 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseButton;
     [HideInInspector]
     public bool slowingDown;
+    public Button restart;
+    public Button restartAfterLoss;
+    public Button quit;
+    public Button quitAfterLoss;
+    public Button proceed;
+
+    private void Start()
+    {
+        proceed.onClick.AddListener(() => NextLevel());
+        restart.onClick.AddListener(() => Restart());
+        restartAfterLoss.onClick.AddListener(() => Restart());
+        quit.onClick.AddListener(() => Quit());
+        quitAfterLoss.onClick.AddListener(() => Quit());
+    }
 
     private void Update()
     {
@@ -27,5 +43,20 @@ public class PauseMenu : MonoBehaviour
             pauseButton.SetActive(false);
         else
             pauseButton.SetActive(true);
+    }
+
+    void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void Quit()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+    
+    void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
