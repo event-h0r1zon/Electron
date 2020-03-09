@@ -5,10 +5,18 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class OrbitRenderer : MonoBehaviour
 {
+
+    //Public Monobehaviours
+    public Orbit orbit;
+
+    //Private Monobehaviour
     LineRenderer lineRenderer;
     [Range(3, 200)]
+
+    //Public Variables
     public int segments;
-    public Orbit orbit;
+    
+    //Private Variables
     private float radius = (float)12.5;
 
     void Awake(){

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Superpositioner : MonoBehaviour
 {
+    //Public Variable
     [HideInInspector]
     public bool setVelocity = false;
+
+    //Public Monobehaviours
     public Transform direction1;
     public Transform direction2;
 

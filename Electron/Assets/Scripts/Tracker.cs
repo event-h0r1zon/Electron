@@ -4,29 +4,36 @@ using UnityEngine;
 
 public class Tracker : MonoBehaviour
 {
+    //Public Monobehaviours
     public GameObject proton;
     public ParticleSystem collisionParticle;
     public ParticleSystem superpositionParticle;
-    private ProtonOrbit orbitScript;
     public Electron electron;
-    private float speed = 18f;
-    public Repulse repulse;
-    private float rotateSpeed = 200f;
+
+    //Private Monobehaviours
+    private ProtonOrbit orbitScript;
     private Rigidbody2D antielectronRB;
     private Rigidbody2D electronRB;
-    private float pushForce = 80;
-    public float superpositionDelay = 0.1f;
+    private GameObject superpositioner;
+
+    //Private Variables
+    private float speed = 18f;
+    private float rotateSpeed = 200f;
     private float rotationAngle1;
     private float rotationAngle2;
-    public bool countdown;
+    private float pushForce = 80;
     private float temporaryY;
     private int currentPositron;
     private bool repulsion = false;
     private bool destroy = false;
     private bool positronSuperposition = false;
-    private GameObject superpositioner;
     private bool positronCollision = false;
     private bool positronInOrbit = false;
+
+    //Public Variable
+    public float superpositionDelay = 0.1f;
+    public bool countdown;
+    public float protonPushForce;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -84,11 +91,17 @@ public class Tracker : MonoBehaviour
         yield return new WaitForSeconds(0.7f);
         positronCollision = false;
     }
+    
+    public Vector2 PushBackVelocity(Vector2 repulsedObject, Vector2 repulsingObject)
+    {
+        Vector2 radiusVector = repulsedObject - repulsingObject;
+        return radiusVector * protonPushForce;
+    }
 
     IEnumerator PushBack()
     {
         positronSuperposition = false;
-        antielectronRB.velocity = repulse.PushBackVelocity(antielectronRB.position, proton.transform.position);
+        antielectronRB.velocity = PushBackVelocity(antielectronRB.position, proton.transform.position);
         repulsion = true;
         yield return new WaitForSeconds(0.3f);
         repulsion = false;

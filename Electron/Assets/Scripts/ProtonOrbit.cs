@@ -5,17 +5,24 @@ using UnityEngine.UI;
 
 public class ProtonOrbit : MonoBehaviour
 {
+    //Public Monobehaviours
     public Electron electron;
     [HideInInspector]
     public Orbit orbit;
     public GameObject Pause;
-    private PauseMenu pauseScript;
+    public GameObject winPanel;
+    
+    //Private Monobehaviours
+    private UImanager uiScript;
     private Collider2D col2D;
+    
+    //Private Variables
     private float radius;
+    private bool electronFalling;
+
+    //Public Variables
     [HideInInspector]
     public bool electronInOrbit = false;
-    private bool electronFalling;
-    public GameObject winPanel;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -33,7 +40,7 @@ public class ProtonOrbit : MonoBehaviour
     void Start()
     {
         Pause = GameObject.Find("UI Manager");
-        pauseScript = Pause.GetComponent<PauseMenu>();
+        uiScript = Pause.GetComponent<UImanager>();
         electron.AssignGameObjects();
         col2D = GetComponent<Collider2D>();
     }
@@ -41,7 +48,7 @@ public class ProtonOrbit : MonoBehaviour
     void Update()
     {
         electronFalling = electron.ElectronFalling();
-        if (electron.electron != null && !pauseScript.slowingDown && electronInOrbit)
+        if (electron.electron != null && !uiScript.slowingDown && electronInOrbit)
             orbit.ExecuteOrbit(electron.electron.transform, transform, radius);
         else
             return;

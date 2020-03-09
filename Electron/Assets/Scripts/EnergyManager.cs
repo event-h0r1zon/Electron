@@ -6,28 +6,35 @@ using UnityEngine.SceneManagement;
 using TMPro;
 public class EnergyManager : MonoBehaviour
 {
+    //Public Monobehaviours
     public Slider slider;
     public GameObject Pause;
-    private float currentTime = 0;
     public ParticleSystem energyParticle;
     public ParticleSystem superpositionParticle;
-    private PauseMenu pauseScript;
-    public float energyBonus;
-    public float energyDecreaseDuration;
-    private bool electronFalling;
     public Electron electron;
-    private PlayerMovement electronProperties;
     public GameObject proton;
-    private ProtonOrbit protonScript;
     public GameObject[] superpositions;
     public List<Superpositioner> superpositioners;
     public GameObject[] antiprotons;
     public List<AntiProton> antiprotonScripts;
     public GameObject[] quantumEnergys;
     public List<EnergyAdder> energyAdders;
+    public GameObject countdownText;
+
+    //Public Variables
+    public float energyBonus;
+    public float energyDecreaseDuration;
     public float jumpEnergy = 0.15f;
     public float fallingBonus = 0.1f;
-    public GameObject countdownText;
+
+    //Private Variables
+    private float currentTime = 0;   
+    private bool electronFalling;
+
+    //Private Monobehaviours 
+    private UImanager uiScript;
+    private PlayerMovement electronProperties;
+    private ProtonOrbit protonScript;
     private TextMeshProUGUI textUI;
 
     private void Awake()
@@ -37,7 +44,7 @@ public class EnergyManager : MonoBehaviour
         textUI = countdownText.GetComponent<TextMeshProUGUI>();
         electronProperties = electron.electron.GetComponent<PlayerMovement>();
         slider.value = slider.maxValue;
-        pauseScript = Pause.GetComponent<PauseMenu>();
+        uiScript = Pause.GetComponent<UImanager>();
         proton = GameObject.FindGameObjectWithTag("Proton");
         antiprotons = GameObject.FindGameObjectsWithTag("Antiproton");
         superpositions = GameObject.FindGameObjectsWithTag("Superpositioner");
@@ -77,7 +84,7 @@ public class EnergyManager : MonoBehaviour
                     electron.positrons[i].GetComponent<Tracker>().countdown = false;
             }
 
-            if (electron.electron != null && !pauseScript.slowingDown)
+            if (electron.electron != null && !uiScript.slowingDown)
             {
 
                 electronFalling = electron.ElectronFalling();

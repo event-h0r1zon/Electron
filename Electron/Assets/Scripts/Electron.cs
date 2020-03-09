@@ -5,8 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class Electron
 {
+    //Public Monobehaviours
     public GameObject electron;
     public GameObject[] positrons;
+
+    //Private Variables
     private float temporaryElectronY;
 
     public void AssignGameObjects()

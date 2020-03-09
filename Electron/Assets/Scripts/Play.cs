@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Play : MonoBehaviour
 {
+    //Public Monobehaviours
     public Button play;
     public Button quit;
 

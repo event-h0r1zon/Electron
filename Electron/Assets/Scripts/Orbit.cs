@@ -5,8 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class Orbit
 {
+    //Public Variables
     [HideInInspector]
     public bool enteredOrbit = false;
+
+    //Private Variables
     private bool setProgression = false;
     private bool progressDirector;
     private float orbitProgression = 0f;

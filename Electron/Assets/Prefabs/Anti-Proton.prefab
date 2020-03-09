@@ -48,6 +48,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -145,7 +146,6 @@ MonoBehaviour:
   segments: 90
   orbit:
     enteredOrbit: 0
-  radius: 12.5
 --- !u!1 &8691871060546068602
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,6 +240,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -306,11 +307,10 @@ MonoBehaviour:
   electronPushed: {fileID: 198157547220164012, guid: 4961a16ba01e09547be3e1c9d16d5ad0,
     type: 3}
   lowerEnergy: 0
+  pushForce: 2
   Pause: {fileID: 0}
   electron:
     electron: {fileID: 0}
     positrons: []
   orbit:
     enteredOrbit: 0
-  repulse:
-    pushForce: 2

@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
     private float temporarySuperPositionTime = 0f;
     private bool inSuperposition = false;
     private bool pressedPause = false;
+    private float numberOfJumpsR;
+    private float numberOfJumpsL;
 
     //Public monobehaviors
     public ParticleSystem jumpingParticle;
@@ -47,6 +49,8 @@ public class PlayerMovement : MonoBehaviour
         proton = GameObject.Find("Proton Sprite");
         protonOrbit = proton.GetComponent<ProtonOrbit>();
         superpositioners = GameObject.FindGameObjectsWithTag("Superpositioner");
+        numberOfJumpsL = 0;
+        numberOfJumpsR = 0;
         for (int i = 0; i < superpositioners.Length; i++)
             superpositionerScripts.Add(superpositioners[i].GetComponent<Superpositioner>());
     }
@@ -59,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(!countdown)
         {
-            rb.gravityScale = 5f;
+            rb.gravityScale = 5.5f;
             for (int i = 0; i < superpositioners.Length; i++)
             {
                 if (superpositionerScripts[i].setVelocity && Time.time - temporarySuperPositionTime >= superpositionDelay)
@@ -120,9 +124,35 @@ public class PlayerMovement : MonoBehaviour
             jumped = true;
             ParticleSystem.Instantiate(jumpingParticle, transform.position, Quaternion.identity);
             if (Screen.width / 2 < touchPosition.x)
-                rb.velocity = jumpForce;
+            {
+                if (numberOfJumpsR > 0)
+                {
+                    rb.velocity = jumpForce*Mathf.Log(10 + numberOfJumpsR, 10);
+                    numberOfJumpsR++;
+                }
+                else
+                {
+                    rb.velocity = jumpForce;
+                    numberOfJumpsR = 0;
+                    numberOfJumpsL = 0;
+                    numberOfJumpsR++;
+                }
+            }
             else
-                rb.velocity = new Vector2(-jumpForce.x, jumpForce.y);
+            {
+                if (numberOfJumpsL > 0)
+                {
+                    rb.velocity = new Vector2(-jumpForce.x, jumpForce.y) * Mathf.Log(10 + numberOfJumpsL, 10);
+                    numberOfJumpsL++;
+                }
+                else
+                {
+                    rb.velocity = new Vector2(-jumpForce.x, jumpForce.y);
+                    numberOfJumpsL = 0;
+                    numberOfJumpsR = 0;
+                    numberOfJumpsL++;
+                }
+            }
             temporaryJumpTime = Time.time;
         }
     }

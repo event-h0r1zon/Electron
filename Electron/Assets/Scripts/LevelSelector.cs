@@ -7,15 +7,22 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelector : MonoBehaviour
 {
+    //Public Monobehaviours
     public GameObject levelHolder;
-    public List<Sprite> sprites = new List<Sprite>();
     public GameObject levelIcon;
     public GameObject thisCanvas;
+
+    //Public Variables~Data Structures
+    public List<Sprite> sprites = new List<Sprite>();
     private List<GameObject> levelButtons = new List<GameObject>();
     public int numberOfLevels = 50;
     public Vector2 iconSpacing;
+
+    //Private Monobehaviours
     private Rect panelDimensions;
     private Rect iconDimensions;
+
+    //Private Variables
     private int amountPerPage;
     private int currentLevelCount;
 

@@ -47,6 +47,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -144,7 +145,6 @@ MonoBehaviour:
   segments: 128
   orbit:
     enteredOrbit: 0
-  radius: 12.5
 --- !u!1 &1814664434320671081
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1814664434320671081}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -192,6 +192,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -256,10 +257,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   electron:
-    electronG: {fileID: 0}
-    antielectronG: {fileID: 0}
-    electronIsFalling: 0
-    antielectronIsFalling: 0
+    electron: {fileID: 0}
+    positrons: []
   orbit:
     enteredOrbit: 0
+  Pause: {fileID: 0}
   electronInOrbit: 0
+  winPanel: {fileID: 0}

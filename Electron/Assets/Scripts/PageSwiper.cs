@@ -5,11 +5,14 @@ using UnityEngine.EventSystems;
 
 public class PageSwiper : MonoBehaviour, IDragHandler, IEndDragHandler
 {
+    //Private Variables~Data Structures
+    private int currentPage = 1;
     private Vector3 panelLocation;
+
+    //Public Variables
     public float percentThreshold = 0.2f;
     public float easing = 0.5f;
     public int totalPages = 1;
-    private int currentPage = 1;
 
     // Start is called before the first frame update
     void Start()

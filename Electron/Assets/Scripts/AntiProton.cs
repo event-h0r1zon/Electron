@@ -5,22 +5,29 @@ using UnityEngine.UI;
 
 public class AntiProton : MonoBehaviour
 {
-    private bool enteredZone = false;
-    public ParticleSystem electronPushed;
-    [HideInInspector]
+    //Public Variables
     public bool lowerEnergy = false;
-    public GameObject Pause;
-    private PauseMenu pauseScript;
+    public float pushForce;
+
+    //Public Monobehaviours
+    public ParticleSystem electronPushed;
     public Electron electron;
-    private string enteringPositron;
-    private int currentPositron;
-    private Rigidbody2D electronRB;
-    private float positronTmpY;
-    private Collider2D col2D;
     [HideInInspector]
     public Orbit orbit;
-    public Repulse repulse;
+    [HideInInspector]
+    public GameObject Pause;
+
+    //Private Variables
+    private bool enteredZone = false;
+    private string enteringPositron;
+    private int currentPositron;
+    private float positronTmpY;
     private float radius;
+
+    //Private Monobehaviours
+    private UImanager uiScript;
+    private Rigidbody2D electronRB;
+    private Collider2D col2D;
 
     private void Start()
     {
@@ -29,8 +36,14 @@ public class AntiProton : MonoBehaviour
         if(electron.positrons.Length > 0)
             positronTmpY = electron.positrons[currentPositron].transform.position.y;
         electronRB = electron.electron.GetComponent<Rigidbody2D>();
-        pauseScript = Pause.GetComponent<PauseMenu>();
+        uiScript = Pause.GetComponent<UImanager>();
         col2D = GetComponent<Collider2D>();
+    }
+    
+    public Vector2 PushBackVelocity(Vector2 repulsedObject, Vector2 repulsingObject)
+    {
+        Vector2 radiusVector = repulsedObject - repulsingObject;
+        return radiusVector * pushForce;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -57,7 +70,7 @@ public class AntiProton : MonoBehaviour
         if (electronRB != null && enteredZone)
         {
             ParticleSystem.Instantiate(electronPushed, electron.electron.transform.position, Quaternion.identity);
-            electronRB.velocity = repulse.PushBackVelocity(electronRB.position, transform.position);
+            electronRB.velocity = PushBackVelocity(electronRB.position, transform.position);
             enteredZone = false;
         }
         else
@@ -66,7 +79,7 @@ public class AntiProton : MonoBehaviour
 
     void Update()
     {
-        if(GameObject.Find(enteringPositron) != null && !pauseScript.slowingDown)
+        if(GameObject.Find(enteringPositron) != null && !uiScript.slowingDown)
             orbit.ExecuteOrbit(GameObject.Find(enteringPositron).transform, transform, radius);
     }
 
